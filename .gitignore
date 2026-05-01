@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generator output (the .doricolib build target — committed deliberately, not via build)
+build/
+dist/
