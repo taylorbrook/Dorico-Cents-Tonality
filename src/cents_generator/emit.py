@@ -318,6 +318,22 @@ def write(
     # use anywhere in this fixture).
     body = body.replace(b" />", b"/>")
 
+    # Byte-fidelity post-process: Python's ElementTree emits the XML declaration
+    # with SINGLE quotes (<?xml version='1.0' encoding='utf-8'?>) but Dorico's
+    # template uses DOUBLE quotes (<?xml version="1.0" encoding="utf-8"?>).
+    # Both are XML-equivalent, but Plan 03's round-trip diff requires byte
+    # equality. Apply only to the first line — the XML declaration is the
+    # only place ET emits single-quote attribute syntax (element attributes
+    # inside the document body always use double quotes).
+    if body.startswith(b"<?xml "):
+        nl_idx = body.find(b"\n")
+        if nl_idx != -1:
+            decl, rest = body[:nl_idx], body[nl_idx:]
+            decl = decl.replace(b"version='1.0'", b'version="1.0"').replace(
+                b"encoding='utf-8'", b'encoding="utf-8"'
+            )
+            body = decl + rest
+
     # Force LF line endings (avoid Windows CRLF surprises). Write in binary.
     # Append a trailing newline to match the template (template ends with '\n').
     if not body.endswith(b"\n"):

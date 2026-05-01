@@ -9,3 +9,7 @@ __pycache__/
 # Generator output (the .doricolib build target — committed deliberately, not via build)
 build/
 dist/
+
+# User's local round-trip target — kept out of the repo. The round-trip test
+# reads it when present and skips cleanly when absent.
+TonalitySystemStartTemplate.doricolib
