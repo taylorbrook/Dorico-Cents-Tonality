@@ -15,10 +15,10 @@
 
 ### Schema fidelity
 
-- [ ] **SCH-01**: Generator emits the seven canonical sections in Dorico's export order: temperaments → accidentalSystems → accidentalDefinitions → tonalitySystemDefinitions → textDefinitions → glyphDefinitions → compositeDefinitions
+- [x] **SCH-01**: Generator emits the seven canonical sections in Dorico's export order: temperaments → accidentalSystems → accidentalDefinitions → tonalitySystemDefinitions → textDefinitions → glyphDefinitions → compositeDefinitions
 - [x] **SCH-02**: Output uses `<fileVersion>1.1450</fileVersion>` and `<kScoreLibrary>` root, matching the working template
-- [ ] **SCH-03**: Output uses tab indentation, lowercase booleans (`true`/`false`), inline `(x, y)` tuple syntax for cutOut points, raw `n/1200` rational fractions for pitch deltas (no auto-reduction), uppercase-X hex codepoints (`0xE262`), six-decimal float strings (`100.000000`), and comma-space–separated ID lists
-- [ ] **SCH-04**: Empty arrays serialize as self-closing `<scalingRules array="true"/>` and `<relativeAttachments array="true"/>` (never as omitted elements) — required to avoid Dorico's silent-text-component-drop bug
+- [x] **SCH-03**: Output uses tab indentation, lowercase booleans (`true`/`false`), inline `(x, y)` tuple syntax for cutOut points, raw `n/1200` rational fractions for pitch deltas (no auto-reduction), uppercase-X hex codepoints (`0xE262`), six-decimal float strings (`100.000000`), and comma-space–separated ID lists
+- [x] **SCH-04**: Empty arrays serialize as self-closing `<scalingRules array="true"/>` and `<relativeAttachments array="true"/>` (never as omitted elements) — required to avoid Dorico's silent-text-component-drop bug
 - [ ] **SCH-05**: A round-trip test reproduces the three template entities (Natural, `-14`, `#-31`) byte-for-byte modulo entityIDs, exercising all three composite classes (glyph-only, text-only, glyph+text)
 
 ### Tonality system & accidentals
@@ -95,10 +95,10 @@ Mapped by the roadmapper agent on 2026-05-01.
 | GEN-03 | Phase 1 | Complete |
 | GEN-04 | Phase 1 | Complete |
 | GEN-05 | Phase 2 | Pending |
-| SCH-01 | Phase 1 | Pending |
+| SCH-01 | Phase 1 | Complete |
 | SCH-02 | Phase 1 | Complete |
-| SCH-03 | Phase 1 | Pending |
-| SCH-04 | Phase 1 | Pending |
+| SCH-03 | Phase 1 | Complete |
+| SCH-04 | Phase 1 | Complete |
 | SCH-05 | Phase 1 | Pending |
 | TON-01 | Phase 2 | Pending |
 | TON-02 | Phase 2 | Pending |

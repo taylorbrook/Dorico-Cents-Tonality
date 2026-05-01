@@ -30,3 +30,25 @@ fix needs to come from a privileged caller (e.g. `gsd-sdk init` regeneration,
 or a one-time hand-edit of STATE.md by the user).
 
 This is a project-template issue, not a regression introduced by Phase 01.
+
+## Recurrence noted by Plan 01-02 executor (2026-05-01)
+
+The same four SDK calls failed identically when Plan 01-02 ran:
+`state.advance-plan` (regex parse), `state.record-metric` (missing markdown
+table), `state.add-decision` (heading mismatch — not attempted this run),
+`state.record-session` (missing "Stopped At" field). The same three calls
+succeeded: `state.update-progress` (frontmatter `completed_plans` 1 → 2,
+`percent` 33 → 67), `roadmap.update-plan-progress 1` (01-02 checkbox
+`[ ]` → `[x]`), and `requirements.mark-complete SCH-01 SCH-03 SCH-04`.
+
+The Plan 01-02 executor performed minimal hand-edits to STATE.md to keep the
+Current Position section aligned with reality:
+- `Plan: 1 of 3` → `Plan: 2 of 3 complete; next plan: 03 (orchestrator + round-trip)`
+- `**Plan:** none yet` → `**Plan:** 02 complete (compose.py + emit.py); next is 03 (orchestrator + round-trip)`
+- Performance Metrics: added per-plan duration line.
+- Session Continuity: `Last action` and `Next action` updated.
+
+These hand-edits are confined to the human-readable Current Position /
+Performance Metrics / Session Continuity sections — they do NOT touch the
+authoritative frontmatter `progress` block (which the SDK manages and is
+already correct).

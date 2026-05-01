@@ -33,7 +33,7 @@ Plans:
 - [x] 01-01-PLAN.md — Foundation: PROJECT_NAMESPACE pinned UUID + entity_id helper, project-wide constants (FILE_VERSION, SMuFL codepoints, SECTION_ORDER), and frozen dataclasses for all 9 entity/sub-entity types
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 01-02-PLAN.md — Three-class composite dispatcher (compose.py: build_class_a/b/c) and byte-faithful XML emission (emit.py: tabs, lowercase booleans, raw n/d, 0xE26X hex, 6-decimal floats, comma-space IDs, self-closing empty arrays)
+- [x] 01-02-PLAN.md — Three-class composite dispatcher (compose.py: build_class_a/b/c) and byte-faithful XML emission (emit.py: tabs, lowercase booleans, raw n/d, 0xE26X hex, 6-decimal floats, comma-space IDs, self-closing empty arrays)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 - [ ] 01-03-PLAN.md — Orchestrator (main.py) + CLI shim (build.py) wiring the foundation into a `python build.py --out <path>` entrypoint, plus byte-faithful round-trip test against TonalitySystemStartTemplate.doricolib (modulo entityIDs) and two-run determinism tests
@@ -79,7 +79,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Generator Skeleton + Template Round-Trip | 0/3 | Planned | - |
+| 1. Generator Skeleton + Template Round-Trip | 2/3 | In Progress|  |
 | 2. Range Expansion to ±99¢ | 0/0 | Not started | - |
 | 3. Dorico Import + Playback Validation | 0/0 | Not started | - |
 | 4. README + Packaging | 0/0 | Not started | - |
