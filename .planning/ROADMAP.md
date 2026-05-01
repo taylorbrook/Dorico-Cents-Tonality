@@ -30,7 +30,7 @@ A Dorico user can import the file, write any pitch to ±1 cent of accuracy using
 **Plans**: 3 plans
 Plans:
 **Wave 1**
-- [ ] 01-01-PLAN.md — Foundation: PROJECT_NAMESPACE pinned UUID + entity_id helper, project-wide constants (FILE_VERSION, SMuFL codepoints, SECTION_ORDER), and frozen dataclasses for all 9 entity/sub-entity types
+- [x] 01-01-PLAN.md — Foundation: PROJECT_NAMESPACE pinned UUID + entity_id helper, project-wide constants (FILE_VERSION, SMuFL codepoints, SECTION_ORDER), and frozen dataclasses for all 9 entity/sub-entity types
 
 **Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 01-02-PLAN.md — Three-class composite dispatcher (compose.py: build_class_a/b/c) and byte-faithful XML emission (emit.py: tabs, lowercase booleans, raw n/d, 0xE26X hex, 6-decimal floats, comma-space IDs, self-closing empty arrays)
