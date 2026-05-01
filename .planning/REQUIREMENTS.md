@@ -86,46 +86,52 @@ Deferred. Tracked here so they don't get re-litigated.
 
 ## Traceability
 
-Updated by the roadmapper agent during phase mapping.
+Mapped by the roadmapper agent on 2026-05-01.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| GEN-01 | TBD | Pending |
-| GEN-02 | TBD | Pending |
-| GEN-03 | TBD | Pending |
-| GEN-04 | TBD | Pending |
-| GEN-05 | TBD | Pending |
-| SCH-01 | TBD | Pending |
-| SCH-02 | TBD | Pending |
-| SCH-03 | TBD | Pending |
-| SCH-04 | TBD | Pending |
-| SCH-05 | TBD | Pending |
-| TON-01 | TBD | Pending |
-| TON-02 | TBD | Pending |
-| TON-03 | TBD | Pending |
-| TON-04 | TBD | Pending |
-| TON-05 | TBD | Pending |
-| TON-06 | TBD | Pending |
-| VIS-01 | TBD | Pending |
-| VIS-02 | TBD | Pending |
-| VIS-03 | TBD | Pending |
-| VIS-04 | TBD | Pending |
-| VIS-05 | TBD | Pending |
-| PLAY-01 | TBD | Pending |
-| PLAY-02 | TBD | Pending |
-| PLAY-03 | TBD | Pending |
-| UX-01 | TBD | Pending |
-| UX-02 | TBD | Pending |
-| UX-03 | TBD | Pending |
-| DIST-01 | TBD | Pending |
-| DIST-02 | TBD | Pending |
-| DIST-03 | TBD | Pending |
+| GEN-01 | Phase 1 | Pending |
+| GEN-02 | Phase 1 | Pending |
+| GEN-03 | Phase 1 | Pending |
+| GEN-04 | Phase 1 | Pending |
+| GEN-05 | Phase 2 | Pending |
+| SCH-01 | Phase 1 | Pending |
+| SCH-02 | Phase 1 | Pending |
+| SCH-03 | Phase 1 | Pending |
+| SCH-04 | Phase 1 | Pending |
+| SCH-05 | Phase 1 | Pending |
+| TON-01 | Phase 2 | Pending |
+| TON-02 | Phase 2 | Pending |
+| TON-03 | Phase 2 | Pending |
+| TON-04 | Phase 2 | Pending |
+| TON-05 | Phase 2 | Pending |
+| TON-06 | Phase 2 | Pending |
+| VIS-01 | Phase 2 | Pending |
+| VIS-02 | Phase 2 | Pending |
+| VIS-03 | Phase 2 | Pending |
+| VIS-04 | Phase 2 | Pending |
+| VIS-05 | Phase 2 | Pending |
+| PLAY-01 | Phase 2 | Pending |
+| PLAY-02 | Phase 3 | Pending |
+| PLAY-03 | Phase 3 | Pending |
+| UX-01 | Phase 3 | Pending |
+| UX-02 | Phase 3 | Pending |
+| UX-03 | Phase 3 | Pending |
+| DIST-01 | Phase 4 | Pending |
+| DIST-02 | Phase 4 | Pending |
+| DIST-03 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 30 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 30 ⚠️ (will be resolved by roadmapper)
+- Mapped to phases: 30 (100%)
+- Unmapped: 0 ✓
+
+**Phase distribution:**
+- Phase 1 (Generator Skeleton + Template Round-Trip): 9 requirements
+- Phase 2 (Range Expansion to ±99¢): 13 requirements
+- Phase 3 (Dorico Import + Playback Validation): 5 requirements
+- Phase 4 (README + Packaging): 3 requirements
 
 ---
 *Requirements defined: 2026-05-01*
-*Last updated: 2026-05-01 after initial definition*
+*Last updated: 2026-05-01 — roadmapper traceability mapping*
