@@ -52,3 +52,27 @@ These hand-edits are confined to the human-readable Current Position /
 Performance Metrics / Session Continuity sections — they do NOT touch the
 authoritative frontmatter `progress` block (which the SDK manages and is
 already correct).
+
+## Recurrence noted by Plan 01-03 executor (2026-05-01)
+
+Same four SDK calls failed identically on Plan 01-03's run — the schema
+mismatches documented above are still present:
+- `state.advance-plan` → "Cannot parse Current Plan or Total Plans in Phase from STATE.md"
+- `state.record-metric` → "Performance Metrics section not found in STATE.md"
+- `state.add-decision` → "Decisions section not found in STATE.md"
+- `state.record-session` → "No session fields found in STATE.md"
+
+The same three calls succeeded:
+- `state.update-progress` (frontmatter `completed_plans` 2 → 3, `percent` 67 → 100, `completed_phases` 0 → 1)
+- `roadmap.update-plan-progress 1` (Phase 01 status set to "Complete" in ROADMAP.md)
+- `requirements.mark-complete GEN-01 GEN-02 GEN-03 SCH-01 SCH-02 SCH-03 SCH-04 SCH-05` (3 newly marked: GEN-01, GEN-02, SCH-05; the other 5 were already complete from prior plans)
+
+Plan 01-03's executor performed the same minimal hand-edits as Plan 01-02:
+Current Position section updated to reflect Phase 01 complete; Performance
+Metrics annotated with Plan 01-03's duration (5.2min) and the deliverable
+md5; Session Continuity Last/Next/Resumption pointers advanced to Phase 02.
+
+The frontmatter `progress` block (the authoritative source) is correct
+(`completed_phases: 1`, `completed_plans: 3`, `percent: 100`) — the SDK
+managed that update correctly. The narrative sections were aligned by hand
+to keep the human-readable view consistent with the authoritative state.

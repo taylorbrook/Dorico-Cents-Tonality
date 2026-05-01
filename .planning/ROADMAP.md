@@ -11,7 +11,7 @@ A Dorico user can import the file, write any pitch to ±1 cent of accuracy using
 
 ## Phases
 
-- [ ] **Phase 1: Generator Skeleton + Template Round-Trip** — Lock byte-faithful XML emission and deterministic UUIDs by reproducing the working template's 3 entities byte-for-byte (modulo entityIDs)
+- [x] **Phase 1: Generator Skeleton + Template Round-Trip** — Lock byte-faithful XML emission and deterministic UUIDs by reproducing the working template's 3 entities byte-for-byte (modulo entityIDs) (completed 2026-05-01)
 - [ ] **Phase 2: Range Expansion to ±99¢** — Sweep `(natural, sharp, flat) × ±99¢` to emit the full 597-accidental `cents.doricolib`, with centralized off-by-100-safe pitch math
 - [ ] **Phase 3: Dorico Import + Playback Validation** — Physically validate import, panel UX, tuner-accurate playback, and visual layout in Dorico Pro 6.x
 - [ ] **Phase 4: README + Packaging** — Ship the README (open-key-signature gating leads), MIT LICENSE, and verify install on the user's actual macOS Dorico install
@@ -36,7 +36,7 @@ Plans:
 - [x] 01-02-PLAN.md — Three-class composite dispatcher (compose.py: build_class_a/b/c) and byte-faithful XML emission (emit.py: tabs, lowercase booleans, raw n/d, 0xE26X hex, 6-decimal floats, comma-space IDs, self-closing empty arrays)
 
 **Wave 3** *(blocked on Wave 2 completion)*
-- [ ] 01-03-PLAN.md — Orchestrator (main.py) + CLI shim (build.py) wiring the foundation into a `python build.py --out <path>` entrypoint, plus byte-faithful round-trip test against TonalitySystemStartTemplate.doricolib (modulo entityIDs) and two-run determinism tests
+- [x] 01-03-PLAN.md — Orchestrator (main.py) + CLI shim (build.py) wiring the foundation into a `python build.py --out <path>` entrypoint, plus byte-faithful round-trip test against TonalitySystemStartTemplate.doricolib (modulo entityIDs) and two-run determinism tests
 **UI hint**: no
 
 ### Phase 2: Range Expansion to ±99¢
@@ -79,7 +79,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Generator Skeleton + Template Round-Trip | 2/3 | In Progress|  |
+| 1. Generator Skeleton + Template Round-Trip | 3/3 | Complete   | 2026-05-01 |
 | 2. Range Expansion to ±99¢ | 0/0 | Not started | - |
 | 3. Dorico Import + Playback Validation | 0/0 | Not started | - |
 | 4. README + Packaging | 0/0 | Not started | - |

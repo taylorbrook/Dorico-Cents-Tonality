@@ -7,8 +7,8 @@
 
 ### Generator (Python build tool)
 
-- [ ] **GEN-01**: A Python 3.11+ stdlib-only generator script produces `cents.doricolib` from a single command (no third-party dependencies)
-- [ ] **GEN-02**: Re-running the generator produces a byte-identical `cents.doricolib` (deterministic UUIDs via `uuid5(PROJECT_NAMESPACE, key)`)
+- [x] **GEN-01**: A Python 3.11+ stdlib-only generator script produces `cents.doricolib` from a single command (no third-party dependencies)
+- [x] **GEN-02**: Re-running the generator produces a byte-identical `cents.doricolib` (deterministic UUIDs via `uuid5(PROJECT_NAMESPACE, key)`)
 - [x] **GEN-03**: Generator code is split into discrete modules — UUID derivation, entity dataclasses, composite dispatcher, XML emission, orchestrator — so individual concerns can be modified independently
 - [x] **GEN-04**: A pinned project namespace UUID lives as a single named constant; comments warn against rotating it
 - [ ] **GEN-05**: A central pitch-delta helper computes `pitchDeltaFromNatural` numerator from `(base, cents)` so the off-by-100 trap is impossible to introduce in user code (`Sharp +14` → `114/1200`, `Flat -7` → `-107/1200`, `Natural -7` → `-7/1200`)
@@ -19,7 +19,7 @@
 - [x] **SCH-02**: Output uses `<fileVersion>1.1450</fileVersion>` and `<kScoreLibrary>` root, matching the working template
 - [x] **SCH-03**: Output uses tab indentation, lowercase booleans (`true`/`false`), inline `(x, y)` tuple syntax for cutOut points, raw `n/1200` rational fractions for pitch deltas (no auto-reduction), uppercase-X hex codepoints (`0xE262`), six-decimal float strings (`100.000000`), and comma-space–separated ID lists
 - [x] **SCH-04**: Empty arrays serialize as self-closing `<scalingRules array="true"/>` and `<relativeAttachments array="true"/>` (never as omitted elements) — required to avoid Dorico's silent-text-component-drop bug
-- [ ] **SCH-05**: A round-trip test reproduces the three template entities (Natural, `-14`, `#-31`) byte-for-byte modulo entityIDs, exercising all three composite classes (glyph-only, text-only, glyph+text)
+- [x] **SCH-05**: A round-trip test reproduces the three template entities (Natural, `-14`, `#-31`) byte-for-byte modulo entityIDs, exercising all three composite classes (glyph-only, text-only, glyph+text)
 
 ### Tonality system & accidentals
 
@@ -90,8 +90,8 @@ Mapped by the roadmapper agent on 2026-05-01.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| GEN-01 | Phase 1 | Pending |
-| GEN-02 | Phase 1 | Pending |
+| GEN-01 | Phase 1 | Complete |
+| GEN-02 | Phase 1 | Complete |
 | GEN-03 | Phase 1 | Complete |
 | GEN-04 | Phase 1 | Complete |
 | GEN-05 | Phase 2 | Pending |
@@ -99,7 +99,7 @@ Mapped by the roadmapper agent on 2026-05-01.
 | SCH-02 | Phase 1 | Complete |
 | SCH-03 | Phase 1 | Complete |
 | SCH-04 | Phase 1 | Complete |
-| SCH-05 | Phase 1 | Pending |
+| SCH-05 | Phase 1 | Complete |
 | TON-01 | Phase 2 | Pending |
 | TON-02 | Phase 2 | Pending |
 | TON-03 | Phase 2 | Pending |
