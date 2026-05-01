@@ -27,7 +27,16 @@ A Dorico user can import the file, write any pitch to ±1 cent of accuracy using
   2. The generator can re-emit the three template entities (Natural=Class A glyph-only, `-14`=Class C text-only, `#-31`=Class B glyph+text) byte-for-byte against `TonalitySystemStartTemplate.doricolib` modulo entityIDs — exercising every composite-class code path.
   3. Output is well-formed XML (`xmllint --noout` passes) with `<fileVersion>1.1450</fileVersion>`, `<kScoreLibrary>` root, the seven canonical sections in canonical order (temperaments → accidentalSystems → accidentalDefinitions → tonalitySystemDefinitions → textDefinitions → glyphDefinitions → compositeDefinitions), tab indentation, lowercase booleans, raw `n/1200` rationals, `0xE262`-style hex codepoints, six-decimal float strings, and self-closing `<scalingRules array="true"/>` / `<relativeAttachments array="true"/>` for empty arrays.
   4. The generator runs from a single CLI command on Python 3.11+ stdlib only (no third-party dependencies) and is split into discrete modules (UUID derivation, entity dataclasses, composite dispatcher, XML emission, orchestrator) with a single named `PROJECT_NAMESPACE` UUID constant carrying a never-rotate warning comment.
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+**Wave 1**
+- [ ] 01-01-PLAN.md — Foundation: PROJECT_NAMESPACE pinned UUID + entity_id helper, project-wide constants (FILE_VERSION, SMuFL codepoints, SECTION_ORDER), and frozen dataclasses for all 9 entity/sub-entity types
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 01-02-PLAN.md — Three-class composite dispatcher (compose.py: build_class_a/b/c) and byte-faithful XML emission (emit.py: tabs, lowercase booleans, raw n/d, 0xE26X hex, 6-decimal floats, comma-space IDs, self-closing empty arrays)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+- [ ] 01-03-PLAN.md — Orchestrator (main.py) + CLI shim (build.py) wiring the foundation into a `python build.py --out <path>` entrypoint, plus byte-faithful round-trip test against TonalitySystemStartTemplate.doricolib (modulo entityIDs) and two-run determinism tests
 **UI hint**: no
 
 ### Phase 2: Range Expansion to ±99¢
@@ -70,7 +79,7 @@ A Dorico user can import the file, write any pitch to ±1 cent of accuracy using
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Generator Skeleton + Template Round-Trip | 0/0 | Not started | - |
+| 1. Generator Skeleton + Template Round-Trip | 0/3 | Planned | - |
 | 2. Range Expansion to ±99¢ | 0/0 | Not started | - |
 | 3. Dorico Import + Playback Validation | 0/0 | Not started | - |
 | 4. README + Packaging | 0/0 | Not started | - |
@@ -99,3 +108,4 @@ A Dorico user can import the file, write any pitch to ±1 cent of accuracy using
 
 ---
 *Roadmap created: 2026-05-01*
+*Phase 1 planned: 2026-05-01 — 3 plans across 3 waves (foundation → dispatcher+emit → orchestrator+round-trip)*
