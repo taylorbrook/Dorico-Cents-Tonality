@@ -3,18 +3,18 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-05-02T01:26:24.288Z"
+last_updated: "2026-05-02T01:31:14.019Z"
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 6
-  completed_plans: 3
-  percent: 50
+  completed_plans: 4
+  percent: 67
 ---
 
 # State: Cents — Custom Tonality System for Dorico
 
-**Last updated:** 2026-05-01 (after Phase 02 context capture)
+**Last updated:** 2026-05-02 (after Phase 02 Plan 01 execution — pitch_delta_numerator helper)
 
 ## Project Reference
 
@@ -29,12 +29,12 @@ progress:
 ## Current Position
 
 Phase: 02 (range-expansion-to-99) — EXECUTING
-Plan: 1 of 3
+Plan: 2 of 3
 
-- **Phase:** 1 — Generator Skeleton + Template Round-Trip
-- **Plan:** 03 complete (orchestrator + CLI + round-trip + determinism + UUID snapshot tests); Phase 01 closed
+- **Phase:** 2 — Range Expansion to ±99¢
+- **Plan:** 01 complete (`pitch_delta_numerator` helper at `src/cents_generator/pitch.py` + 12 hand-calculated unit tests; Pitfall 1 defeated; GEN-05 satisfied); next is Plan 02 (cents-mode emission sweep)
 - **Status:** Executing Phase 02
-- **Progress:** [██████████] 100%
+- **Progress:** [███████░░░] 67%
 
 ```
 [done] Phase 1: Generator Skeleton + Template Round-Trip   ← complete
@@ -50,8 +50,10 @@ Overall: 1/4 phases complete (25%)
 - **v1 requirements mapped:** 30/30 (100%)
 - **Phases complete:** 1/4
 - **Plans complete in Phase 01:** 3/3 (Plan 01-01 — 5.6min; Plan 01-02 — 5.5min; Plan 01-03 — 5.2min)
+- **Plans complete in Phase 02:** 1/3 (Plan 02-01 — 1.7min, 12 tests added, 2 files created)
 - **Code review depth:** standard (per config.json)
 - **Phase 01 deliverable:** 9057-byte `.doricolib` byte-identical to TonalitySystemStartTemplate.doricolib (modulo entityIDs); 81 tests pass; md5 = `5f207c1de7f8ddf7f0af678384828cd4`
+- **Phase 02 Plan 01 deliverable:** `src/cents_generator/pitch.py` (59 lines, stdlib only) + `tests/test_pitch.py` (80 lines, 12 tests). 93/93 tests pass (81 Phase 1 + 12 new). Zero Phase 1 files modified.
 
 ## Accumulated Context
 
@@ -87,9 +89,9 @@ Overall: 1/4 phases complete (25%)
 
 ## Session Continuity
 
-- **Last action:** Phase 02 context captured. Six gray areas resolved via `/gsd-discuss-phase 2`: (D-01) all-empty `<parentEntityID/>` on the three SMuFL glyphs in cents mode; (D-02) `accidentalDefinitionIDs` ordered by pitch delta -199¢→+199¢; (D-03) Phase 1's `build_template_three()` survives as regression entrypoint; (D-04) `build.py --mode cents|template` with `cents` default; (D-05) zero-dev keys are bare base `sharp`/`flat`/`natural` (locks forever per Pitfall 6); (D-06) `pitch_delta_numerator` is the only place pitch math lives; (D-07) layered tests = unit on helper + structural invariants on full output + ~6–10 sampled byte snapshots (incl. off-by-100 diagnostic cases). CONTEXT.md and DISCUSSION-LOG.md committed (a74547a).
-- **Next action:** `/gsd-plan-phase 2` — research + plan creation against the locked decisions in `.planning/phases/02-range-expansion-to-99/02-CONTEXT.md`.
-- **Resumption hint:** All context is in `.planning/`. Phase 02 decisions live in `.planning/phases/02-range-expansion-to-99/02-CONTEXT.md`; canonical refs include PROJECT.md, REQUIREMENTS.md (GEN-05, TON-01..06, VIS-01..05, PLAY-01), ROADMAP.md §Phase 2, research/PITFALLS.md (Pitfalls 1, 6, 7, 8), and the existing Phase 1 modules in `src/cents_generator/`.
+- **Last action:** Plan 02-01 executed (commits `fe95617` RED + `164f6d3` GREEN). Created `src/cents_generator/pitch.py` exporting `pitch_delta_numerator(base, cents) -> int` returning `{natural: 0, sharp: 100, flat: -100}[base] + cents`. Created `tests/test_pitch.py` with 12 hand-calculated one-assertion tests pinning the D-06 cases plus the Sharp -50 / Natural +50 enharmonic invariant. Pitfall 1 (off-by-100 trap) defeated: helper is the only producer of computed pitch-delta numerators in `src/`. GEN-05 marked complete in REQUIREMENTS.md. Full pytest suite green at 93/93. Zero Phase 1 files modified (verified by `git diff --stat HEAD~2 HEAD`).
+- **Next action:** Plan 02-02 — cents-mode emission sweep using the helper. Wires `from cents_generator.pitch import pitch_delta_numerator` into the Class A/B/C dispatcher; introduces `build_cents_full_sweep()` and the `--mode cents|template` CLI flag (D-04).
+- **Resumption hint:** All context is in `.planning/`. The helper + tests live in `src/cents_generator/pitch.py` and `tests/test_pitch.py`; Plan 02-02 will read from these. Phase 02 decisions remain locked in `.planning/phases/02-range-expansion-to-99/02-CONTEXT.md`. Plan 02-01 SUMMARY at `.planning/phases/02-range-expansion-to-99/02-01-SUMMARY.md`.
 
 ---
 *State initialized: 2026-05-01*

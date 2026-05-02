@@ -11,7 +11,7 @@
 - [x] **GEN-02**: Re-running the generator produces a byte-identical `cents.doricolib` (deterministic UUIDs via `uuid5(PROJECT_NAMESPACE, key)`)
 - [x] **GEN-03**: Generator code is split into discrete modules — UUID derivation, entity dataclasses, composite dispatcher, XML emission, orchestrator — so individual concerns can be modified independently
 - [x] **GEN-04**: A pinned project namespace UUID lives as a single named constant; comments warn against rotating it
-- [ ] **GEN-05**: A central pitch-delta helper computes `pitchDeltaFromNatural` numerator from `(base, cents)` so the off-by-100 trap is impossible to introduce in user code (`Sharp +14` → `114/1200`, `Flat -7` → `-107/1200`, `Natural -7` → `-7/1200`)
+- [x] **GEN-05**: A central pitch-delta helper computes `pitchDeltaFromNatural` numerator from `(base, cents)` so the off-by-100 trap is impossible to introduce in user code (`Sharp +14` → `114/1200`, `Flat -7` → `-107/1200`, `Natural -7` → `-7/1200`)
 
 ### Schema fidelity
 
@@ -94,7 +94,7 @@ Mapped by the roadmapper agent on 2026-05-01.
 | GEN-02 | Phase 1 | Complete |
 | GEN-03 | Phase 1 | Complete |
 | GEN-04 | Phase 1 | Complete |
-| GEN-05 | Phase 2 | Pending |
+| GEN-05 | Phase 2 | Complete |
 | SCH-01 | Phase 1 | Complete |
 | SCH-02 | Phase 1 | Complete |
 | SCH-03 | Phase 1 | Complete |
