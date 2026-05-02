@@ -76,3 +76,30 @@ SECTION_ORDER: tuple[tuple[str, str], ...] = (
     ("glyphDefinitions",          "GlyphPrimitiveEntityDefinition"),
     ("compositeDefinitions",      "CompositeDefinition"),
 )
+
+
+# ----------------------------------------------------------------------------
+# Cents-mode key strings. THESE LOCK FOREVER (D-05, PITFALLS.md §"Pitfall 6").
+# ----------------------------------------------------------------------------
+# The strings below are the second argument to entity_id(kind, key). Renaming
+# any of them creates duplicate entityIDs on user re-import — there is no
+# clean migration path. If a future major version requires renaming, document
+# it as a one-time manual cleanup in the README; do NOT rotate these
+# constants in code.
+#
+# Phase 1's '-template'-suffixed keys live in main.py and are distinct from
+# these — both sets coexist in the same PROJECT_NAMESPACE because they
+# produce different entityIDs.
+# ----------------------------------------------------------------------------
+KEY_TEMPERAMENT_12EDO_CENTS: str = "12-edo"
+KEY_ACC_SYSTEM_CENTS: str        = "cents"
+KEY_TONALITY_CENTS: str          = "cents"
+
+
+# ----------------------------------------------------------------------------
+# Cents-mode sweep range: signed cent deviations from -99 to +99, excluding 0.
+# The zero-deviation case is emitted via bare-base accidentals (Sharp/Flat/
+# Natural) once per base, NOT iterated as cents=0. See CONTEXT.md D-05 and
+# main.py::build_cents_full_sweep().
+# ----------------------------------------------------------------------------
+CENTS_RANGE_NONZERO: tuple[int, ...] = tuple(c for c in range(-99, 100) if c != 0)

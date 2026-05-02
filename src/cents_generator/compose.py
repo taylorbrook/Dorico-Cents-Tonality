@@ -58,20 +58,55 @@ CLASS_C_TEXT_Y_OFFSET: int = -12
 # ----------------------------------------------------------------------------
 # Glyph factory — produces deterministic GlyphDefs for the 3 SMuFL accidentals
 # ----------------------------------------------------------------------------
-_GLYPH_SPEC: dict[str, tuple[str, int, str]] = {
-    # base → (smufl_name, codepoint, parent_entity_id)
-    # Natural carries the factory parent_entity_id 'glyph.accidentalNatural'
-    # (template line 130). Sharp and Flat have empty parent (template line 143).
-    # NOTE: Phase 2 may switch all glyphs to empty parent for Dorico-version
-    # decoupling; Phase 1 reproduces the template verbatim.
+# Two glyph specs exist:
+# - Template-mode preserves Phase 1's Natural-inherits-'glyph.accidentalNatural'
+#   quirk for byte-faithful round-trip against TonalitySystemStartTemplate.doricolib
+#   (D-03). Without this, the round-trip test fails on a single-line diff.
+# - Cents-mode (D-01) emits all-empty <parentEntityID/> on every glyph,
+#   decoupling the library from any factory glyph entityID Steinberg might
+#   shift between Dorico point releases (per STACK.md §"Stack Patterns by
+#   Variant").
+#
+# DO NOT collapse these into one spec — the template-mode round-trip test
+# is a permanent regression check that requires Natural's parent to be
+# 'glyph.accidentalNatural' verbatim.
+_GLYPH_SPEC_TEMPLATE: dict[str, tuple[str, int, str]] = {
+    # base -> (smufl_name, codepoint, parent_entity_id)
     "natural": ("accidentalNatural", SMUFL_NATURAL, "glyph.accidentalNatural"),
     "sharp":   ("accidentalSharp",   SMUFL_SHARP,   ""),
     "flat":    ("accidentalFlat",    SMUFL_FLAT,    ""),
 }
 
+_GLYPH_SPEC_CENTS: dict[str, tuple[str, int, str]] = {
+    # All parents empty (D-01) — decouple from Dorico factory IDs.
+    "natural": ("accidentalNatural", SMUFL_NATURAL, ""),
+    "sharp":   ("accidentalSharp",   SMUFL_SHARP,   ""),
+    "flat":    ("accidentalFlat",    SMUFL_FLAT,    ""),
+}
 
-def _glyph_for(base: Literal["natural", "sharp", "flat"]) -> GlyphDef:
-    smufl_name, codepoint, parent = _GLYPH_SPEC[base]
+_GLYPH_SPECS: dict[str, dict[str, tuple[str, int, str]]] = {
+    "template": _GLYPH_SPEC_TEMPLATE,
+    "cents":    _GLYPH_SPEC_CENTS,
+}
+
+
+def _glyph_for(
+    base: Literal["natural", "sharp", "flat"],
+    *,
+    mode: Literal["cents", "template"] = "cents",
+) -> GlyphDef:
+    """Return the SMuFL GlyphDef for `base` under the requested `mode`.
+
+    mode='cents' (default): all glyphs emit <parentEntityID/> empty (D-01).
+    mode='template': Natural inherits 'glyph.accidentalNatural'; Sharp and
+                     Flat have empty parents (Phase 1 template fidelity).
+
+    The glyph entityID itself is NOT mode-dependent — the same SMuFL name
+    ('accidentalNatural', etc.) drives the same uuid5 hash in both modes,
+    so the glyph entityID is shared. Only the parent_entity_id field
+    differs by mode.
+    """
+    smufl_name, codepoint, parent = _GLYPH_SPECS[mode][base]
     return GlyphDef(
         name=smufl_name,
         entity_id=entity_id(KIND_GLYPH, smufl_name),
@@ -134,6 +169,7 @@ def build_class_a(
     cut_out_ne: tuple[float, float] = (0.0, 0.0),
     cut_out_se: tuple[float, float] = (0.0, 0.0),
     cut_out_sw: tuple[float, float] = (0.0, 0.0),
+    mode: Literal["cents", "template"] = "cents",
 ) -> AccidentalBundle:
     """Build a Class A (glyph-only) accidental.
 
@@ -141,12 +177,10 @@ def build_class_a(
     cut_out_* values are caller-supplied so Plan 03 can emit Natural with
     the template's literal `0/24` and non-zero cut-outs verbatim.
 
-    Phase 2 will introduce a higher-level wrapper that hardcodes "0/1200"
-    for the three regular zero-deviation entries (Sharp, Flat, Natural) —
-    but Phase 1's round-trip needs the exact template literal `0/24` for
-    Natural, hence the explicit parameter.
+    `mode` selects the glyph spec (D-01 vs Phase 1 template quirk) — see
+    `_glyph_for`. Default 'cents' matches Phase 2's production sweep.
     """
-    glyph = _glyph_for(base)
+    glyph = _glyph_for(base, mode=mode)
     comp_eid = entity_id(KIND_COMPOSITE, composite_key)
     composite = CompositeDef(
         name=composite_name,
@@ -188,16 +222,23 @@ def build_class_b(
     composite_key: str,
     label_text: str,
     pitch_delta_from_natural: str,
+    mode: Literal["cents", "template"] = "cents",
 ) -> AccidentalBundle:
     """Build a Class B (glyph + cents-label) accidental.
 
     Used by template's `#-31` entity. The glyph is at zOrder=1, the text at
     zOrder=2, with a relativeAttachment anchoring the text to the glyph's
     kBaselineRight via the text's kBaselineLeft using offset (-8, -12).
+
+    `mode` selects the glyph spec (D-01 vs Phase 1 template quirk) — see
+    `_glyph_for`. Default 'cents' matches Phase 2's production sweep.
+    Sharp's and Flat's parent_entity_id is empty in BOTH modes, so the
+    `mode` kwarg is effectively a no-op for Class B today; it exists for
+    signature symmetry with Class A and for future-proofing.
     """
     if base not in ("sharp", "flat"):
         raise ValueError(f"Class B requires base in ('sharp', 'flat'); got {base!r}")
-    glyph = _glyph_for(base)
+    glyph = _glyph_for(base, mode=mode)
     text = _text_for(label_text)
     comp_eid = entity_id(KIND_COMPOSITE, composite_key)
 
