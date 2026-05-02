@@ -49,7 +49,16 @@ Plans:
   3. Visual rendering follows the three-class dispatcher: Class A = glyph-only; Class B (sharp/flat-base non-zero) = SMuFL glyph + signed cent text via `relativeAttachment` `kBaselineRight ↔ kBaselineLeft` offset `(-8, -12)`; Class C (natural-base non-zero) = signed cent text only at `xOffset/yOffset = (18, -12)`. Cent labels use `font.defaulttext`, always include the sign character, and are deduplicated as 198 shared `TextPrimitiveEntityDefinition`s reused across all three bases at each cent value.
   4. A central `pitch_delta_numerator(base, cents)` helper computes `pitchDeltaFromNatural` numerator as `{natural: 0, sharp: 100, flat: -100}[base] + cents`, is unit-tested against hand-calculated values (`Sharp +14` → 114/1200, `Flat -7` → -107/1200, `Natural -7` → -7/1200, `Sharp -50` → 50/1200, `Flat +50` → -50/1200), and is the only place pitch math lives — making the off-by-100 trap impossible to introduce in user code.
   5. Total entity count is 1411 (1 Temperament + 1 AccidentalSystem + 1 TonalitySystem + 597 AccidentalDefinitions + 597 CompositeDefinitions + 3 GlyphDefinitions + 198 TextDefinitions = 1397 + 14 = 1411), emitted via section-grouped deduplication by entityID.
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+**Wave 1**
+- [ ] 02-01-PLAN.md — GEN-05: pitch_delta_numerator(base, cents) helper module + 12 hand-calculated unit tests (off-by-100 trap defense, Pitfall 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 02-02-PLAN.md — Mode-aware glyph spec (D-01) + build_cents_full_sweep() orchestrator over (natural,sharp,flat) × ±99¢ + --mode {cents,template} CLI flag (D-04); preserves Phase 1 build_template_three (D-03); locks cents-mode keys per D-05
+
+**Wave 3** *(blocked on Wave 2 completion)*
+- [ ] 02-03-PLAN.md — Test net (structural invariants per D-07.2 + UUID pins & byte-faithful snippet snapshots per D-07.3 + cents-mode determinism per D-07.5) + emit production cents.doricolib artifact at repo root
 **UI hint**: no
 
 ### Phase 3: Dorico Import + Playback Validation
@@ -80,7 +89,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Generator Skeleton + Template Round-Trip | 3/3 | Complete   | 2026-05-01 |
-| 2. Range Expansion to ±99¢ | 0/0 | Not started | - |
+| 2. Range Expansion to ±99¢ | 0/3 | Planned | - |
 | 3. Dorico Import + Playback Validation | 0/0 | Not started | - |
 | 4. README + Packaging | 0/0 | Not started | - |
 
