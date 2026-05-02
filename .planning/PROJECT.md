@@ -12,7 +12,7 @@ A Dorico user can import the file, write any pitch to ±1 cent of accuracy using
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Manually verify cent-accuracy by importing into Dorico and spot-checking playback against a tuner — Validated in Phase 3 against Dorico Pro 6.2.2 macOS + HALion (PLAY-03 12-row matrix at ±1¢; UX-01 597-entry panel; UX-02 4/4 search queries; UX-03 sparse + dense both clean)
 
 ### Active
 
@@ -22,7 +22,6 @@ A Dorico user can import the file, write any pitch to ±1 cent of accuracy using
 - [ ] Render each non-zero accidental as the standard SMuFL glyph (`accidentalSharp` / `accidentalFlat` / `accidentalNatural`) plus a small text label showing signed cents (`+14`, `-14`) anchored at the glyph's baseline-right
 - [ ] Encode pitch deviations via `pitchDeltaFromNatural` as `n/1200` so playback is cent-accurate
 - [ ] Build the file deterministically with a Python generator script using stable UUIDs (re-running produces byte-identical output)
-- [ ] Manually verify cent-accuracy by importing into Dorico and spot-checking playback against a tuner
 - [ ] Ship the `.doricolib` file alongside a README explaining install location, import steps, and how to enter a cent-deviated accidental from Dorico's popover
 
 ### Out of Scope
@@ -56,13 +55,13 @@ A Dorico user can import the file, write any pitch to ±1 cent of accuracy using
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Tonality system named "cents" | Descriptive of what it does; user-chosen | — Pending |
-| 12-EDO temperament (standard `relativeDiatonicDivisions`) | Cent labels carry all the microtonality; the temperament stays familiar so notation reads normally | — Pending |
-| Generate ±99¢ around natural / sharp / flat (≈600 accidentals) | Covers full -199¢ to +199¢ pitch range with both enharmonic spellings; skips double accidentals to keep the picker manageable | — Pending |
-| Always-signed cent labels (`+14` / `-14`) | Unambiguous at a glance; consistent visual rhythm whether deviation is positive or negative | — Pending |
-| Include clean `♯`, `♭`, `♮` at 0¢ (no label) | Same tonality system serves normal tonal music — no need to swap libraries for a quick C-major passage | — Pending |
-| Python generator with stable UUIDs | ~600 entries by hand is brittle; deterministic UUIDs enable safe re-imports | — Pending |
-| Manual playback validation against a tuner | Practical, catches both math errors and Dorico-acceptance issues; cheaper than building automated regression for an XML deliverable | — Pending |
+| Tonality system named "cents" | Descriptive of what it does; user-chosen | Validated in Phase 3 (panel surfaces tonality-system selector entry `cents`) |
+| 12-EDO temperament (standard `relativeDiatonicDivisions`) | Cent labels carry all the microtonality; the temperament stays familiar so notation reads normally | Validated in Phase 3 (zero-dev rows play at +100¢/-100¢/0¢) |
+| Generate ±99¢ around natural / sharp / flat (597 accidentals) | Covers full -199¢ to +199¢ pitch range with both enharmonic spellings; skips double accidentals to keep the picker manageable | Validated in Phase 3 (panel populates with 597 entries; ±99¢ boundary rows play correctly; Sharp -50 ≡ Natural +50 enharmonic confirmed) |
+| Always-signed cent labels (`+14` / `-14`) | Unambiguous at a glance; consistent visual rhythm whether deviation is positive or negative | Validated in Phase 3 (UX-02 search queries match signed-label conventions) |
+| Include clean `♯`, `♭`, `♮` at 0¢ (no label) | Same tonality system serves normal tonal music — no need to swap libraries for a quick C-major passage | Validated in Phase 3 (zero-dev triplet visible in panel; Sharp/Flat/Natural play at +100¢/-100¢/0¢) |
+| Python generator with stable UUIDs | ~600 entries by hand is brittle; deterministic UUIDs enable safe re-imports | Validated in Phase 3 (md5 `4cd707d2f4b10154a528b95e2ff5db9f` unchanged through phase) |
+| Manual playback validation against a tuner | Practical, catches both math errors and Dorico-acceptance issues; cheaper than building automated regression for an XML deliverable | Validated in Phase 3 (HALion + tuner; 12-row matrix at ±1¢; off-by-100 trap defenses confirmed) |
 
 ## Evolution
 
@@ -82,4 +81,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-01 after initialization*
+*Last updated: 2026-05-02 after Phase 3 (Dorico import + playback validation against Dorico Pro 6.2.2 macOS)*
