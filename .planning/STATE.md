@@ -3,18 +3,18 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-05-02T03:00:00.000Z"
+last_updated: "2026-05-02T01:55:00.000Z"
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 5
-  percent: 83
+  completed_plans: 6
+  percent: 100
 ---
 
 # State: Cents — Custom Tonality System for Dorico
 
-**Last updated:** 2026-05-02 (after Phase 02 Plan 02 execution — cents-mode emission sweep)
+**Last updated:** 2026-05-02 (after Phase 02 Plan 03 execution — cents-mode test net + production cents.doricolib shipped)
 
 ## Project Reference
 
@@ -28,33 +28,34 @@ progress:
 
 ## Current Position
 
-Phase: 02 (range-expansion-to-99) — EXECUTING
-Plan: 3 of 3
+Phase: 02 (range-expansion-to-99) — COMPLETE
+Plan: 3 of 3 — DONE
 
-- **Phase:** 2 — Range Expansion to ±99¢
-- **Plan:** 02 complete (`build_cents_full_sweep()` orchestrator over `(natural, sharp, flat) × {0} ∪ ±1..±99¢`; `--mode {cents,template}` CLI flag default `cents`; mode-aware glyph spec D-01 cents-mode all-empty parents preserving Phase 1 D-03 round-trip via `--mode template`; locked cents-mode keys per D-05; production `cents.doricolib` emits 1.26 MB / 1398 top-level entities). 12 of 13 Phase 2 requirements satisfied (TON-01..06, VIS-01..05, PLAY-01); next is Plan 02-03 (test net + repo-root artifact)
-- **Status:** Executing Phase 02
-- **Progress:** [████████░░] 83%
+- **Phase:** 2 — Range Expansion to ±99¢ — COMPLETE
+- **Plan:** 03 complete. 31 new tests added (12 structural, 16 snapshot, 3 cents-mode determinism); Production `cents.doricolib` shipped at repo root (1,261,618 bytes, md5 `4cd707d2f4b10154a528b95e2ff5db9f`, byte-deterministic). Full pytest suite: 133/133. All 13 Phase 2 requirements satisfied (GEN-05, TON-01..06, VIS-01..05, PLAY-01).
+- **Status:** Phase 02 complete; ready to advance to Phase 03 (manual Dorico import + tuner spot-checks)
+- **Progress:** [██████████] 100%
 
 ```
 [done] Phase 1: Generator Skeleton + Template Round-Trip   ← complete
-[····] Phase 2: Range Expansion to ±99¢                    ← Plans 1-2 done; Plan 3 (test net) is next
-[····] Phase 3: Dorico Import + Playback Validation
+[done] Phase 2: Range Expansion to ±99¢                    ← complete (all 3 plans)
+[····] Phase 3: Dorico Import + Playback Validation       ← next
 [····] Phase 4: README + Packaging
 ```
 
-Overall: 1/4 phases complete (25%)
+Overall: 2/4 phases complete (50%)
 
 ## Performance Metrics
 
 - **v1 requirements mapped:** 30/30 (100%)
-- **Phases complete:** 1/4
+- **Phases complete:** 2/4
 - **Plans complete in Phase 01:** 3/3 (Plan 01-01 — 5.6min; Plan 01-02 — 5.5min; Plan 01-03 — 5.2min)
-- **Plans complete in Phase 02:** 2/3 (Plan 02-01 — 1.7min, 12 tests added, 2 files created; Plan 02-02 — ~8min, 9 new tests, 8 files modified, 0 created)
+- **Plans complete in Phase 02:** 3/3 (Plan 02-01 — 1.7min, 12 tests added, 2 files created; Plan 02-02 — ~8min, 9 new tests, 8 files modified, 0 created; Plan 02-03 — ~7min, 31 new tests, 3 files created, 1 modified)
 - **Code review depth:** standard (per config.json)
 - **Phase 01 deliverable:** 9057-byte `.doricolib` byte-identical to TonalitySystemStartTemplate.doricolib (modulo entityIDs); 81 tests pass; md5 = `5f207c1de7f8ddf7f0af678384828cd4`
 - **Phase 02 Plan 01 deliverable:** `src/cents_generator/pitch.py` (59 lines, stdlib only) + `tests/test_pitch.py` (80 lines, 12 tests). 93/93 tests pass (81 Phase 1 + 12 new). Zero Phase 1 files modified.
-- **Phase 02 Plan 02 deliverable:** `build_cents_full_sweep()` in main.py (~155 added lines) + mode-aware `_glyph_for` in compose.py (+41 lines) + locked cents-mode constants in constants.py (+27 lines) + `--mode {cents,template}` CLI default cents. Production `cents.doricolib`: 1,261,618 bytes, md5 `4cd707d2f4b10154a528b95e2ff5db9f`, 597 AccidentalDefinitions / 198 TextDefinitions / 3 GlyphDefinitions / 597 CompositeDefinitions / 1+1+1 singletons (1398 top-level entities). xmllint passes. Cross-PYTHONHASHSEED determinism verified. Full suite 102/102 (81 Phase 1 + 12 Plan 02-01 + 9 Plan 02-02). Phase 1 byte-faithful round-trip preserved via `--mode template` (D-03).
+- **Phase 02 Plan 02 deliverable:** `build_cents_full_sweep()` in main.py (~155 added lines) + mode-aware `_glyph_for` in compose.py (+41 lines) + locked cents-mode constants in constants.py (+27 lines) + `--mode {cents,template}` CLI default cents. Cross-PYTHONHASHSEED determinism verified. Full suite 102/102 (81 Phase 1 + 12 Plan 02-01 + 9 Plan 02-02). Phase 1 byte-faithful round-trip preserved via `--mode template` (D-03).
+- **Phase 02 Plan 03 deliverable:** Production `cents.doricolib` shipped at repo root (1,261,618 bytes, md5 `4cd707d2f4b10154a528b95e2ff5db9f`). Test net: 31 new tests across `tests/test_cents_structural.py` (12 tests, 289 lines) + `tests/test_cents_snapshot.py` (16 tests, 578 lines, 22 pinned UUIDs + 10 byte-faithful snippet snapshots) + `tests/test_determinism.py` extension (3 cents-mode tests appended). Full suite 133/133. Production-scale determinism end-to-end verified (`diff cents.doricolib /tmp/cents-rerun.doricolib` exits empty). All 13 Phase 2 requirements (GEN-05, TON-01..06, VIS-01..05, PLAY-01) closed.
 
 ## Accumulated Context
 
@@ -90,9 +91,9 @@ Overall: 1/4 phases complete (25%)
 
 ## Session Continuity
 
-- **Last action:** Plan 02-02 executed (commits `78120e2` Task-1 RED + `69a494f` Task-1 GREEN + `ce80b3d` Task-2). Modified `src/cents_generator/main.py` to add `build_cents_full_sweep()` returning the same 7-tuple shape as `build_template_three()` for the production sweep over `(natural, sharp, flat) × {0} ∪ ±1..±99¢`; `run()` widened to `run(out_path, mode='cents'|'template')`; `main()` argparse grew `--mode {cents,template}` flag with default `cents` (D-04). Modified `src/cents_generator/compose.py` to split `_GLYPH_SPEC` into `_GLYPH_SPEC_TEMPLATE` (Phase 1 quirk: Natural inherits `glyph.accidentalNatural`) and `_GLYPH_SPEC_CENTS` (D-01: all-empty parents); `_glyph_for(base, *, mode)` selects the right spec; `build_class_a` and `build_class_b` accept `mode` kwarg with default `'cents'` and propagate. Modified `src/cents_generator/constants.py` to add locked cents-mode keys `KEY_TEMPERAMENT_12EDO_CENTS='12-edo'`, `KEY_ACC_SYSTEM_CENTS='cents'`, `KEY_TONALITY_CENTS='cents'` plus `CENTS_RANGE_NONZERO` (198-tuple) under a LOCK FOREVER comment block (D-05 + Pitfall 6). Updated 13 test callsites across `tests/test_template_roundtrip.py` (7), `tests/test_uuid_snapshot.py` (1), `tests/test_determinism.py` (4 + 1 subprocess args list), `tests/test_compose.py` (1 + 9 new mode-aware tests), and `tests/test_emit_format.py` (1 helper, Rule 1 deviation). 12 of 13 Phase 2 requirements satisfied (all TON-* + all VIS-* + PLAY-01); GEN-05 was already closed in Plan 02-01. Production `cents.doricolib` emits 1,261,618 bytes with 597 AccidentalDefinitions, 198 TextDefinitions, 3 GlyphDefinitions, 597 CompositeDefinitions, 1+1+1 singletons (md5 `4cd707d2f4b10154a528b95e2ff5db9f`). xmllint --noout passes. Cross-PYTHONHASHSEED determinism verified (12345 vs 99999 → byte-identical). Full pytest suite green at 102/102. Phase 1 byte-faithful round-trip preserved via `--mode template` (D-03).
-- **Next action:** Plan 02-03 — test net for cents mode (structural invariants per D-07.2 + sampled byte snapshots per D-07.3 + cents-mode UUID pins + cents-mode determinism per D-07.5) + emit production `cents.doricolib` artifact at repo root. The test net asserts: total entity count, exactly 597 AccidentalDefinitions / 198 TextDefinitions / 3 GlyphDefinitions / 597 CompositeDefinitions, single `<name>cents</name>` for AccidentalSystem and TonalitySystemDefinition, all three zero-dev entityIDs (Sharp/Flat/Natural) appear in `<accidentalDefinitionIDs>` (Pitfall 8), section ordering matches `SECTION_ORDER`, ~6-10 sampled byte snippets pinning the off-by-100 diagnostic cases, well-formed XML.
-- **Resumption hint:** All context is in `.planning/`. `build_cents_full_sweep()` is callable; CLI surface stable at `python build.py [--mode {cents,template}] [--out PATH]`. Phase 02 decisions remain locked in `.planning/phases/02-range-expansion-to-99/02-CONTEXT.md`. Plan 02-02 SUMMARY at `.planning/phases/02-range-expansion-to-99/02-02-SUMMARY.md`. Note: STATE/CONTEXT/ROADMAP claim "1411 entities" but the actual top-level entity-definition count is 1398 (the 13-entity discrepancy is documentation arithmetic counting inline structural elements; implementation matches the must-haves' explicit per-section counts).
+- **Last action:** Plan 02-03 executed (commits `be3d8a0` Task-1 structural-invariants tests + `c1cc472` Task-2 UUID pins + byte-faithful snippet snapshots + `2790422` Task-3 determinism extension + production cents.doricolib). Created `tests/test_cents_structural.py` (289 lines, 12 tests) asserting per-section counts (1+1+597+1+198+3+597 = 1398), tonality name 'cents', 12-EDO temperament divisions, section ordering, xmllint well-formedness, Pitfall 8 defense (all three zero-dev entityIDs in `<accidentalDefinitionIDs>`), D-02 pitch-delta ascending order, Pitfall 1 delta-count invariants, D-01 empty-parent on glyphs, fileVersion 1.1450. Created `tests/test_cents_snapshot.py` (578 lines, 16 tests) pinning 22 cents-mode entityIDs (3 singletons + 11 accidentals + 3 glyphs including Phase 1 cross-mode invariant + 6 texts) plus 5 AccidentalDefinition + 5 CompositeDefinition byte-faithful snippet snapshots covering Class A/B/C and the off-by-100 trap diagnostic cases (Sharp +14 → 114/1200, Sharp -50 → 50/1200, Flat -7 → -107/1200, Natural +50 → 50/1200, Sharp zero-dev → 100/1200). Modified `tests/test_determinism.py` to append 3 cents-mode determinism tests (in-process two-run, subprocess CLI two-run, diff-command two-run); existing 3 template-mode tests preserved verbatim. Emitted production `cents.doricolib` at repo root (1,261,618 bytes, md5 `4cd707d2f4b10154a528b95e2ff5db9f`); committed in Task-3's commit. Full pytest suite: 133/133 (102 + 31 new). [Rule 1 - Bug] deviation: corrected the 99/1200 / -99/1200 expected counts in test_cents_no_off_by_100_in_pitch_deltas from `== 1` (plan text) to `== 2` (correct math: Sharp -1 + Natural +99 both produce 99). All 13 Phase 2 requirements closed (GEN-05, TON-01..06, VIS-01..05, PLAY-01). Phase 1 byte-faithful round-trip preserved.
+- **Next action:** Phase 02 closure. Run `/gsd-verify-phase` (verifier sweep) and/or `/gsd-uat-phase` (UAT sign-off), then `/gsd-transition` to advance into Phase 03 (Dorico Import + Playback Validation — manual import of `cents.doricolib` into the user's macOS Dorico Pro 6.x install + tuner spot-checks across the ±99¢ range + panel-search ergonomics + dense-passage collision evaluation + HALion/NotePerformer playback validation).
+- **Resumption hint:** All context is in `.planning/`. Phase 2 closed; production `cents.doricolib` at repo root. `build_cents_full_sweep()` callable; CLI stable at `python build.py [--mode {cents,template}] [--out PATH]`. Phase 02 decisions locked in `.planning/phases/02-range-expansion-to-99/02-CONTEXT.md`. Plan SUMMARYs at `.planning/phases/02-range-expansion-to-99/02-{01,02,03}-SUMMARY.md`. The test net (133 tests) defends against off-by-100 (Pitfall 1), Natural-absent-from-AccidentalSystem (Pitfall 8), set-iteration non-determinism (Pitfall 15), and pinned-snapshot drift. Phase 3 will be physical Dorico import — no more code work in this layer until tuner spot-checks reveal pitch errors.
 
 ---
 *State initialized: 2026-05-01*

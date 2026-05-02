@@ -12,7 +12,7 @@ A Dorico user can import the file, write any pitch to ±1 cent of accuracy using
 ## Phases
 
 - [x] **Phase 1: Generator Skeleton + Template Round-Trip** — Lock byte-faithful XML emission and deterministic UUIDs by reproducing the working template's 3 entities byte-for-byte (modulo entityIDs) (completed 2026-05-01)
-- [ ] **Phase 2: Range Expansion to ±99¢** — Sweep `(natural, sharp, flat) × ±99¢` to emit the full 597-accidental `cents.doricolib`, with centralized off-by-100-safe pitch math
+- [x] **Phase 2: Range Expansion to ±99¢** — Sweep `(natural, sharp, flat) × ±99¢` to emit the full 597-accidental `cents.doricolib`, with centralized off-by-100-safe pitch math (completed 2026-05-02)
 - [ ] **Phase 3: Dorico Import + Playback Validation** — Physically validate import, panel UX, tuner-accurate playback, and visual layout in Dorico Pro 6.x
 - [ ] **Phase 4: README + Packaging** — Ship the README (open-key-signature gating leads), MIT LICENSE, and verify install on the user's actual macOS Dorico install
 
@@ -58,7 +58,7 @@ Plans:
 - [x] 02-02-PLAN.md — Mode-aware glyph spec (D-01) + build_cents_full_sweep() orchestrator over (natural,sharp,flat) × ±99¢ + --mode {cents,template} CLI flag (D-04); preserves Phase 1 build_template_three (D-03); locks cents-mode keys per D-05
 
 **Wave 3** *(blocked on Wave 2 completion)*
-- [ ] 02-03-PLAN.md — Test net (structural invariants per D-07.2 + UUID pins & byte-faithful snippet snapshots per D-07.3 + cents-mode determinism per D-07.5) + emit production cents.doricolib artifact at repo root
+- [x] 02-03-PLAN.md — Test net (structural invariants per D-07.2 + UUID pins & byte-faithful snippet snapshots per D-07.3 + cents-mode determinism per D-07.5) + emit production cents.doricolib artifact at repo root
 **UI hint**: no
 
 ### Phase 3: Dorico Import + Playback Validation
@@ -89,7 +89,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Generator Skeleton + Template Round-Trip | 3/3 | Complete   | 2026-05-01 |
-| 2. Range Expansion to ±99¢ | 2/3 | In Progress|  |
+| 2. Range Expansion to ±99¢ | 3/3 | Complete   | 2026-05-02 |
 | 3. Dorico Import + Playback Validation | 0/0 | Not started | - |
 | 4. README + Packaging | 0/0 | Not started | - |
 
