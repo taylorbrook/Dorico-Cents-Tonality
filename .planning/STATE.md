@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-last_updated: "2026-05-01T23:56:04.340Z"
+last_updated: "2026-05-02T00:36:18.839Z"
 progress:
   total_phases: 4
   completed_phases: 1
@@ -14,7 +14,7 @@ progress:
 
 # State: Cents — Custom Tonality System for Dorico
 
-**Last updated:** 2026-05-01 (after Plan 01-03 — Phase 01 complete)
+**Last updated:** 2026-05-01 (after Phase 02 context capture)
 
 ## Project Reference
 
@@ -24,7 +24,7 @@ progress:
 - **Requirements:** `.planning/REQUIREMENTS.md` (30 v1 requirements across 7 categories)
 - **Roadmap:** `.planning/ROADMAP.md` (4 phases)
 - **Research:** `.planning/research/` (SUMMARY, STACK, FEATURES, ARCHITECTURE, PITFALLS)
-- **Current focus:** Phase 01 — generator-skeleton-template-round-trip
+- **Current focus:** Phase 02 — range-expansion-to-99 (context captured; ready for /gsd-plan-phase)
 
 ## Current Position
 
@@ -87,9 +87,9 @@ Overall: 1/4 phases complete (25%)
 
 ## Session Continuity
 
-- **Last action:** Plan 01-03 complete — orchestrator + CLI shipped (`python build.py --out cents.doricolib`), byte-faithful round-trip vs. TonalitySystemStartTemplate.doricolib proven, two-run determinism proven across in-process and subprocess paths, UUID snapshot pinned for all 13 entityIDs. 81 tests pass (18 new). All four Phase 01 success criteria are proven by passing tests. Phase 01 closed.
-- **Next action:** Begin Phase 02 — range expansion to ±99¢ (parameter sweep over `(natural, sharp, flat) × range(-99, 100)`; introduces `pitch_delta_numerator(base, cents)` to defeat Pitfall 1 off-by-100).
-- **Resumption hint:** All context is in `.planning/` — load PROJECT.md → REQUIREMENTS.md → ROADMAP.md → research/SUMMARY.md to re-orient. Phase 01 implementation lives in `src/cents_generator/` (uuids, constants, entities, compose, emit, main); CLI is `build.py`; tests in `tests/`.
+- **Last action:** Phase 02 context captured. Six gray areas resolved via `/gsd-discuss-phase 2`: (D-01) all-empty `<parentEntityID/>` on the three SMuFL glyphs in cents mode; (D-02) `accidentalDefinitionIDs` ordered by pitch delta -199¢→+199¢; (D-03) Phase 1's `build_template_three()` survives as regression entrypoint; (D-04) `build.py --mode cents|template` with `cents` default; (D-05) zero-dev keys are bare base `sharp`/`flat`/`natural` (locks forever per Pitfall 6); (D-06) `pitch_delta_numerator` is the only place pitch math lives; (D-07) layered tests = unit on helper + structural invariants on full output + ~6–10 sampled byte snapshots (incl. off-by-100 diagnostic cases). CONTEXT.md and DISCUSSION-LOG.md committed (a74547a).
+- **Next action:** `/gsd-plan-phase 2` — research + plan creation against the locked decisions in `.planning/phases/02-range-expansion-to-99/02-CONTEXT.md`.
+- **Resumption hint:** All context is in `.planning/`. Phase 02 decisions live in `.planning/phases/02-range-expansion-to-99/02-CONTEXT.md`; canonical refs include PROJECT.md, REQUIREMENTS.md (GEN-05, TON-01..06, VIS-01..05, PLAY-01), ROADMAP.md §Phase 2, research/PITFALLS.md (Pitfalls 1, 6, 7, 8), and the existing Phase 1 modules in `src/cents_generator/`.
 
 ---
 *State initialized: 2026-05-01*
