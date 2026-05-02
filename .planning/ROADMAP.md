@@ -87,7 +87,14 @@ Plans:
   2. The README presents Library Manager as the primary install path (per-project, recoverable on failure) and `DefaultLibraryAdditions/` as a power-user path with an explicit "remove if Dorico fails to launch" warning, plus troubleshooting that addresses the open-key-signature gotcha, third-party VST microtonal limits (HALion/NotePerformer confirmed; Kontakt/SWAM/Falcon caveats), font-override caveat (`font.defaulttext` interaction), naming-convention reference (`Sharp +14` / `Flat -50`), and a version-compatibility note pinning to Dorico Pro 6.x.
   3. An MIT `LICENSE` file ships alongside the `.doricolib` and README.
   4. The `.doricolib` is verified installed on the user's actual macOS Dorico install via Library Manager — confirming the install path documented in the README works end-to-end on the target machine.
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+**Wave 1** *(parallel; no shared files)*
+- [ ] 04-01-PLAN.md — DIST-01: README.md authoring (ten sections in order; Dorico Pro 6.0+ leads; Library Manager primary path; DefaultLibraryAdditions warning; Shift+K open-key-sig walkthrough; troubleshooting; compatibility matrix)
+- [ ] 04-02-PLAN.md — DIST-02: MIT LICENSE at repo root (Copyright (c) 2026 Taylor Brook)
+
+**Wave 2** *(blocked on Wave 1 completion; non-autonomous)*
+- [ ] 04-03-PLAN.md — DIST-03: user runs README install + first-note walkthrough on their macOS Dorico Pro 6.x install; record result in 04-VERIFICATION-NOTES.md; patch README if any wording divergence found
 **UI hint**: no
 
 ## Progress
@@ -97,7 +104,7 @@ Plans:
 | 1. Generator Skeleton + Template Round-Trip | 3/3 | Complete   | 2026-05-01 |
 | 2. Range Expansion to ±99¢ | 3/3 | Complete   | 2026-05-02 |
 | 3. Dorico Import + Playback Validation | 0/2 | Planned | - |
-| 4. README + Packaging | 0/0 | Not started | - |
+| 4. README + Packaging | 0/3 | Planned | - |
 
 ## Coverage Audit
 
