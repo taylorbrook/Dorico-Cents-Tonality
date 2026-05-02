@@ -72,10 +72,10 @@ Plans:
 **Plans**: 2 plans
 Plans:
 **Wave 1**
-- [ ] 03-01-PLAN.md — Library Manager import + panel population (UX-01) + panel-search ergonomics across the four named queries (UX-02); xmllint pre-flight + Dorico build version capture; D-03 conditional fix loop tail
+- [x] 03-01-PLAN.md — Library Manager import + panel population (UX-01) + panel-search ergonomics across the four named queries (UX-02); xmllint pre-flight + Dorico build version capture; D-03 conditional fix loop tail
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 03-02-PLAN.md — PLAY-03 12-row tuner spot-check matrix against HALion (3 zero-dev + 2 off-by-100 trap + 6 boundary + 1 enharmonic pair) closing PLAY-02 + PLAY-03; UX-03 sparse no-collision + UX-03 dense `Sharp -50`+`Natural +50`+`Flat +50` chord-stack documentation with Engrave-mode workaround named if collisions occur (D-03 cosmetic carve-out); D-03 conditional fix loop tail
+- [x] 03-02-PLAN.md — PLAY-03 12-row tuner spot-check matrix against HALion (3 zero-dev + 2 off-by-100 trap + 6 boundary + 1 enharmonic pair) closing PLAY-02 + PLAY-03; UX-03 sparse no-collision + UX-03 dense `Sharp -50`+`Natural +50`+`Flat +50` chord-stack documentation with Engrave-mode workaround named if collisions occur (D-03 cosmetic carve-out); D-03 conditional fix loop tail
 **UI hint**: no
 
 ### Phase 4: README + Packaging
