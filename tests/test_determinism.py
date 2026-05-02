@@ -15,8 +15,8 @@ from cents_generator.main import run
 def test_two_runs_in_process_are_byte_identical(tmp_path: pathlib.Path) -> None:
     path_a = tmp_path / "a.doricolib"
     path_b = tmp_path / "b.doricolib"
-    run(path_a)
-    run(path_b)
+    run(path_a, mode="template")
+    run(path_b, mode="template")
     a = path_a.read_bytes()
     b = path_b.read_bytes()
     assert a == b, (
@@ -39,7 +39,7 @@ def test_two_subprocess_runs_via_cli_are_byte_identical(tmp_path: pathlib.Path) 
 
     for path in (path_a, path_b):
         result = subprocess.run(
-            [sys.executable, str(build_py), "--out", str(path)],
+            [sys.executable, str(build_py), "--mode", "template", "--out", str(path)],
             capture_output=True,
             cwd=str(repo_root),
         )
@@ -56,8 +56,8 @@ def test_diff_command_returns_empty(tmp_path: pathlib.Path) -> None:
     """Match STACK.md's verification recipe literally: `diff a b` is empty."""
     path_a = tmp_path / "a.doricolib"
     path_b = tmp_path / "b.doricolib"
-    run(path_a)
-    run(path_b)
+    run(path_a, mode="template")
+    run(path_b, mode="template")
     result = subprocess.run(
         ["diff", str(path_a), str(path_b)],
         capture_output=True,

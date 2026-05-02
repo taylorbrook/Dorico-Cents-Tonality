@@ -126,7 +126,7 @@ def test_snapshot_emitted_xml_contains_all_entity_ids(tmp_path: pathlib.Path) ->
     but emit.write() drops or rewrites them (Pitfall 3 silent-drop variant)."""
     from cents_generator.main import run as cli_run
     out = tmp_path / "snap.doricolib"
-    cli_run(out)
+    cli_run(out, mode="template")
     body = out.read_text("utf-8")
 
     expected = [

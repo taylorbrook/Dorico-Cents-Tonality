@@ -90,6 +90,7 @@ def _build_three_template_entities():
         pitch_delta_from_natural="0/24",
         cut_out_ne=(0.192, 2.116),
         cut_out_sw=(0.476, 0.512),
+        mode="template",  # Phase 2: preserve Phase 1 quirk (Natural inherits 'glyph.accidentalNatural')
     )
     sharp_minus_31 = build_class_b(
         "sharp",
@@ -99,6 +100,7 @@ def _build_three_template_entities():
         composite_key="sharp-31-template",
         label_text="-31",
         pitch_delta_from_natural="69/1200",
+        mode="template",  # signature symmetry; Sharp's parent is empty in both modes
     )
     natural_minus_14 = build_class_c(
         accidental_name="-14",

@@ -93,7 +93,7 @@ def test_round_trip_byte_identical_modulo_entity_ids(tmp_path: pathlib.Path) -> 
     drift — see PITFALLS Pitfall 7."""
     _require_template()
     out_path = tmp_path / "generated.doricolib"
-    run(out_path)
+    run(out_path, mode="template")
 
     generated_bytes = out_path.read_bytes()
     template_bytes = TEMPLATE.read_bytes()
@@ -146,7 +146,7 @@ def test_round_trip_section_ordering_matches_template(tmp_path: pathlib.Path) ->
     same order in both files."""
     _require_template()
     out_path = tmp_path / "generated.doricolib"
-    run(out_path)
+    run(out_path, mode="template")
 
     generated_str = out_path.read_text("utf-8")
     template_str = TEMPLATE.read_text("utf-8")
@@ -173,7 +173,7 @@ def test_round_trip_xmllint_well_formed(tmp_path: pathlib.Path) -> None:
     ElementTree.parse() when xmllint is unavailable on the runner — both
     are acceptable proxies for 'this file parses cleanly'."""
     out_path = tmp_path / "generated.doricolib"
-    run(out_path)
+    run(out_path, mode="template")
     if shutil.which("xmllint"):
         result = subprocess.run(
             ["xmllint", "--noout", str(out_path)],
@@ -192,7 +192,7 @@ def test_round_trip_entity_count_matches_template(tmp_path: pathlib.Path) -> Non
     """The template has exactly: 1 Temperament, 1 AccidentalSystem, 3
     AccidentalDefinitions, 1 TonalitySystem, 2 Texts, 2 Glyphs, 3 Composites."""
     out_path = tmp_path / "generated.doricolib"
-    run(out_path)
+    run(out_path, mode="template")
     body = out_path.read_text("utf-8")
 
     assert body.count("<TemperamentDefinition>") == 1
@@ -208,7 +208,7 @@ def test_round_trip_accidental_names_match_template(tmp_path: pathlib.Path) -> N
     """Verify the three accidental names appear verbatim — these are the
     user-visible labels that traveled forward."""
     out_path = tmp_path / "generated.doricolib"
-    run(out_path)
+    run(out_path, mode="template")
     body = out_path.read_text("utf-8")
 
     assert "<name>Natural</name>" in body
@@ -220,7 +220,7 @@ def test_round_trip_accidental_names_match_template(tmp_path: pathlib.Path) -> N
 def test_round_trip_pitch_deltas_match_template(tmp_path: pathlib.Path) -> None:
     """Critical: pitch deltas must be the template's literal strings."""
     out_path = tmp_path / "generated.doricolib"
-    run(out_path)
+    run(out_path, mode="template")
     body = out_path.read_text("utf-8")
 
     assert "<pitchDeltaFromNatural>0/24</pitchDeltaFromNatural>" in body
@@ -234,6 +234,6 @@ def test_round_trip_file_version_is_1_1450(tmp_path: pathlib.Path) -> None:
     Pitfall 4 mitigation — wrong fileVersion causes Dorico to reject the file
     or strip data on import."""
     out_path = tmp_path / "generated.doricolib"
-    run(out_path)
+    run(out_path, mode="template")
     body = out_path.read_text("utf-8")
     assert "<fileVersion>1.1450</fileVersion>" in body
