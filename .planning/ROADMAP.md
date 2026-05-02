@@ -69,7 +69,13 @@ Plans:
   1. After Library Manager import on Dorico Pro 6.x with an open or atonal key signature in the flow, the Key Signatures, Tonality Systems, and Accidentals panel displays all 597 accidentals — and tuner spot-checks confirm cent-accurate playback against HALion or NotePerformer for: a zero-deviation accidental on each base (Sharp/Flat/Natural plays at +100¢/-100¢/0¢ respectively), the off-by-100 trap (`Sharp +50` plays +150¢ above natural, `Flat -7` plays -107¢), boundary values (`Sharp +99`, `Flat -99`, `Natural ±99`), and an enharmonic-equivalent pair (`Sharp -50` and `Natural +50` produce the same audible sounding pitch).
   2. Panel-search ergonomics work at scale: queries `+14`, `Sharp -`, `Flat +50`, and `Natural` each return the expected matches in usable interactive time.
   3. Cent labels do not collide with note heads or ledger lines in a sparse passage; visual behavior in dense passages (e.g., chord stacking `Sharp -50` + `Natural +50` + `Flat +50` on a single beat) is documented with the Engrave-mode workaround if collisions occur.
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+**Wave 1**
+- [ ] 03-01-PLAN.md — Library Manager import + panel population (UX-01) + panel-search ergonomics across the four named queries (UX-02); xmllint pre-flight + Dorico build version capture; D-03 conditional fix loop tail
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 03-02-PLAN.md — PLAY-03 12-row tuner spot-check matrix against HALion (3 zero-dev + 2 off-by-100 trap + 6 boundary + 1 enharmonic pair) closing PLAY-02 + PLAY-03; UX-03 sparse no-collision + UX-03 dense `Sharp -50`+`Natural +50`+`Flat +50` chord-stack documentation with Engrave-mode workaround named if collisions occur (D-03 cosmetic carve-out); D-03 conditional fix loop tail
 **UI hint**: no
 
 ### Phase 4: README + Packaging
@@ -90,7 +96,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Generator Skeleton + Template Round-Trip | 3/3 | Complete   | 2026-05-01 |
 | 2. Range Expansion to ±99¢ | 3/3 | Complete   | 2026-05-02 |
-| 3. Dorico Import + Playback Validation | 0/0 | Not started | - |
+| 3. Dorico Import + Playback Validation | 0/2 | Planned | - |
 | 4. README + Packaging | 0/0 | Not started | - |
 
 ## Coverage Audit
