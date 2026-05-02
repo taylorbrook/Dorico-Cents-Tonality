@@ -54,7 +54,7 @@
 
 - [x] **DIST-01**: A README accompanies the `.doricolib` and covers, in order: project name, Dorico Pro 6.0+ requirement, package contents, Library Manager install (per-project, primary path), `DefaultLibraryAdditions/` install (power-user path with explicit "remove if Dorico fails to launch" warning), first-note walkthrough that includes the open/atonal key signature step, naming convention reference, troubleshooting (open-key-sig gotcha, third-party VST limits, font-override caveat), version compatibility note, and license
 - [x] **DIST-02**: An `MIT` `LICENSE` file is included
-- [ ] **DIST-03**: The `.doricolib` and README install path is verified on the user's actual macOS Dorico install (manual check)
+- [x] **DIST-03**: The `.doricolib` and README install path is verified on the user's actual macOS Dorico install (manual check)
 
 ## v2 Requirements
 
@@ -119,7 +119,7 @@ Mapped by the roadmapper agent on 2026-05-01.
 | UX-03 | Phase 3 | Pending |
 | DIST-01 | Phase 4 | Complete |
 | DIST-02 | Phase 4 | Complete |
-| DIST-03 | Phase 4 | Pending |
+| DIST-03 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 30 total

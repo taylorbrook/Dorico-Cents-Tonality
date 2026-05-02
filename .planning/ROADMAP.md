@@ -94,7 +94,7 @@ Plans:
 - [x] 04-02-PLAN.md — DIST-02: MIT LICENSE at repo root (Copyright (c) 2026 Taylor Brook)
 
 **Wave 2** *(blocked on Wave 1 completion; non-autonomous)*
-- [ ] 04-03-PLAN.md — DIST-03: user runs README install + first-note walkthrough on their macOS Dorico Pro 6.x install; record result in 04-VERIFICATION-NOTES.md; patch README if any wording divergence found
+- [x] 04-03-PLAN.md — DIST-03: user runs README install + first-note walkthrough on their macOS Dorico Pro 6.x install; record result in 04-VERIFICATION-NOTES.md; patch README if any wording divergence found
 **UI hint**: no
 
 ## Progress
