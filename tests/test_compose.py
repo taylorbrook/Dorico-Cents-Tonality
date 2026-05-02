@@ -15,7 +15,13 @@ from cents_generator.compose import (
 # Class A: glyph-only, no text, no attachment
 # ----------------------------------------------------------------------------
 def test_class_a_natural_template_shape() -> None:
-    """Reproduces the template's Natural entity shape (modulo entityIDs)."""
+    """Reproduces the template's Natural entity shape (modulo entityIDs).
+
+    Phase 2: explicit mode="template" required so the Phase 1 quirk
+    (Natural inherits 'glyph.accidentalNatural') is reachable. Without
+    mode="template", build_class_a defaults to mode="cents" (D-01) and
+    Natural's parent is empty.
+    """
     b = build_class_a(
         "natural",
         accidental_name="Natural",
@@ -25,6 +31,7 @@ def test_class_a_natural_template_shape() -> None:
         pitch_delta_from_natural="0/24",
         cut_out_ne=(0.192, 2.116),
         cut_out_sw=(0.476, 0.512),
+        mode="template",
     )
     assert b.glyph is not None
     assert b.text is None
@@ -40,6 +47,124 @@ def test_class_a_natural_template_shape() -> None:
     assert b.accidental.pitch_delta_from_natural == "0/24"
     assert b.accidental.cut_out_ne == (0.192, 2.116)
     assert b.accidental.cut_out_sw == (0.476, 0.512)
+
+
+# ----------------------------------------------------------------------------
+# Phase 2: mode-aware glyph spec — D-01 cents-mode all-empty parents,
+# template-mode preserves the Natural-inherits-'glyph.accidentalNatural' quirk.
+# ----------------------------------------------------------------------------
+def test_glyph_for_natural_template_mode_inherits_factory_parent() -> None:
+    """Template mode preserves Phase 1's Natural-parent quirk (D-03)."""
+    from cents_generator.compose import _glyph_for
+
+    g = _glyph_for("natural", mode="template")
+    assert g.parent_entity_id == "glyph.accidentalNatural"
+    assert g.code_point == 0xE261
+
+
+def test_glyph_for_natural_cents_mode_emits_empty_parent() -> None:
+    """Cents mode emits <parentEntityID/> empty for Natural (D-01)."""
+    from cents_generator.compose import _glyph_for
+
+    g = _glyph_for("natural", mode="cents")
+    assert g.parent_entity_id == ""
+    assert g.code_point == 0xE261
+
+
+def test_glyph_for_sharp_empty_parent_in_both_modes() -> None:
+    """Sharp's parent is empty in both modes (Phase 1 already had this empty)."""
+    from cents_generator.compose import _glyph_for
+
+    assert _glyph_for("sharp", mode="template").parent_entity_id == ""
+    assert _glyph_for("sharp", mode="cents").parent_entity_id == ""
+
+
+def test_glyph_for_flat_empty_parent_in_both_modes() -> None:
+    """Flat's parent is empty in both modes (Phase 1 already had this empty)."""
+    from cents_generator.compose import _glyph_for
+
+    assert _glyph_for("flat", mode="template").parent_entity_id == ""
+    assert _glyph_for("flat", mode="cents").parent_entity_id == ""
+
+
+def test_glyph_for_natural_entity_id_is_mode_independent() -> None:
+    """Same SMuFL name -> same uuid5 hash regardless of mode; only parent_entity_id differs."""
+    from cents_generator.compose import _glyph_for
+
+    gt = _glyph_for("natural", mode="template")
+    gc = _glyph_for("natural", mode="cents")
+    assert gt.entity_id == gc.entity_id
+    assert gt.parent_entity_id != gc.parent_entity_id
+
+
+def test_build_class_a_mode_cents_default_natural_empty_parent() -> None:
+    """build_class_a default mode is 'cents' -> Natural parent is empty."""
+    b = build_class_a(
+        "natural",
+        accidental_name="Natural",
+        accidental_key="natural",
+        composite_name="Natural",
+        composite_key="natural",
+        pitch_delta_from_natural="0/1200",
+    )
+    assert b.glyph is not None
+    assert b.glyph.parent_entity_id == ""
+
+
+def test_build_class_b_mode_propagates_to_glyph() -> None:
+    """build_class_b accepts mode kwarg and propagates to _glyph_for.
+
+    Sharp's parent is already empty in template mode so the assertion is
+    on Sharp's code-point (mode acceptance is the contract being tested)."""
+    b_template = build_class_b(
+        "sharp",
+        accidental_name="x", accidental_key="x-template",
+        composite_name="x", composite_key="x-template",
+        label_text="-31", pitch_delta_from_natural="69/1200",
+        mode="template",
+    )
+    b_cents = build_class_b(
+        "sharp",
+        accidental_name="x", accidental_key="x-cents",
+        composite_name="x", composite_key="x-cents",
+        label_text="+14", pitch_delta_from_natural="114/1200",
+        mode="cents",
+    )
+    # Both modes produce empty parent for Sharp; mode is accepted as a kwarg.
+    assert b_template.glyph.parent_entity_id == ""
+    assert b_cents.glyph.parent_entity_id == ""
+
+
+# ----------------------------------------------------------------------------
+# Phase 2: cents-mode constants pinned in constants.py — D-05 lock-forever keys
+# ----------------------------------------------------------------------------
+def test_cents_mode_locked_keys_pinned() -> None:
+    """KEY_*_CENTS constants are pinned per D-05 (Pitfall 6 lock-forever)."""
+    from cents_generator.constants import (
+        KEY_ACC_SYSTEM_CENTS,
+        KEY_TEMPERAMENT_12EDO_CENTS,
+        KEY_TONALITY_CENTS,
+    )
+
+    assert KEY_TEMPERAMENT_12EDO_CENTS == "12-edo"
+    assert KEY_ACC_SYSTEM_CENTS == "cents"
+    assert KEY_TONALITY_CENTS == "cents"
+
+
+def test_cents_range_nonzero_spans_minus99_to_plus99_excluding_zero() -> None:
+    """CENTS_RANGE_NONZERO is the 198-entry tuple driving the cents-mode sweep."""
+    from cents_generator.constants import CENTS_RANGE_NONZERO
+
+    assert len(CENTS_RANGE_NONZERO) == 198
+    assert 0 not in CENTS_RANGE_NONZERO
+    assert -99 in CENTS_RANGE_NONZERO
+    assert 99 in CENTS_RANGE_NONZERO
+    # Ascending order: starts at -99, ends at +99.
+    assert CENTS_RANGE_NONZERO[0] == -99
+    assert CENTS_RANGE_NONZERO[-1] == 99
+    # No zero gap in the middle: -1 immediately followed by +1.
+    minus_one_idx = CENTS_RANGE_NONZERO.index(-1)
+    assert CENTS_RANGE_NONZERO[minus_one_idx + 1] == 1
 
 
 def test_class_a_sharp_uses_correct_codepoint_and_no_factory_parent() -> None:
