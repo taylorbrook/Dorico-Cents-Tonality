@@ -91,7 +91,7 @@ Plans:
 Plans:
 **Wave 1** *(parallel; no shared files)*
 - [x] 04-01-PLAN.md — DIST-01: README.md authoring (ten sections in order; Dorico Pro 6.0+ leads; Library Manager primary path; DefaultLibraryAdditions warning; Shift+K open-key-sig walkthrough; troubleshooting; compatibility matrix)
-- [ ] 04-02-PLAN.md — DIST-02: MIT LICENSE at repo root (Copyright (c) 2026 Taylor Brook)
+- [x] 04-02-PLAN.md — DIST-02: MIT LICENSE at repo root (Copyright (c) 2026 Taylor Brook)
 
 **Wave 2** *(blocked on Wave 1 completion; non-autonomous)*
 - [ ] 04-03-PLAN.md — DIST-03: user runs README install + first-note walkthrough on their macOS Dorico Pro 6.x install; record result in 04-VERIFICATION-NOTES.md; patch README if any wording divergence found
