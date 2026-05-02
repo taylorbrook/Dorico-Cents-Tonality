@@ -13,7 +13,7 @@ A Dorico user can import the file, write any pitch to ±1 cent of accuracy using
 
 - [x] **Phase 1: Generator Skeleton + Template Round-Trip** — Lock byte-faithful XML emission and deterministic UUIDs by reproducing the working template's 3 entities byte-for-byte (modulo entityIDs) (completed 2026-05-01)
 - [x] **Phase 2: Range Expansion to ±99¢** — Sweep `(natural, sharp, flat) × ±99¢` to emit the full 597-accidental `cents.doricolib`, with centralized off-by-100-safe pitch math (completed 2026-05-02)
-- [ ] **Phase 3: Dorico Import + Playback Validation** — Physically validate import, panel UX, tuner-accurate playback, and visual layout in Dorico Pro 6.x
+- [x] **Phase 3: Dorico Import + Playback Validation** — Physically validate import, panel UX, tuner-accurate playback, and visual layout in Dorico Pro 6.x (completed 2026-05-02)
 - [ ] **Phase 4: README + Packaging** — Ship the README (open-key-signature gating leads), MIT LICENSE, and verify install on the user's actual macOS Dorico install
 
 ## Phase Details
@@ -90,7 +90,7 @@ Plans:
 **Plans**: 3 plans
 Plans:
 **Wave 1** *(parallel; no shared files)*
-- [ ] 04-01-PLAN.md — DIST-01: README.md authoring (ten sections in order; Dorico Pro 6.0+ leads; Library Manager primary path; DefaultLibraryAdditions warning; Shift+K open-key-sig walkthrough; troubleshooting; compatibility matrix)
+- [x] 04-01-PLAN.md — DIST-01: README.md authoring (ten sections in order; Dorico Pro 6.0+ leads; Library Manager primary path; DefaultLibraryAdditions warning; Shift+K open-key-sig walkthrough; troubleshooting; compatibility matrix)
 - [ ] 04-02-PLAN.md — DIST-02: MIT LICENSE at repo root (Copyright (c) 2026 Taylor Brook)
 
 **Wave 2** *(blocked on Wave 1 completion; non-autonomous)*
@@ -103,8 +103,8 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Generator Skeleton + Template Round-Trip | 3/3 | Complete   | 2026-05-01 |
 | 2. Range Expansion to ±99¢ | 3/3 | Complete   | 2026-05-02 |
-| 3. Dorico Import + Playback Validation | 0/2 | Planned | - |
-| 4. README + Packaging | 0/3 | Planned | - |
+| 3. Dorico Import + Playback Validation | 2/2 | Complete   | 2026-05-02 |
+| 4. README + Packaging | 1/3 | In Progress | - |
 
 ## Coverage Audit
 
