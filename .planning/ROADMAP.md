@@ -55,7 +55,7 @@ Plans:
 - [x] 02-01-PLAN.md — GEN-05: pitch_delta_numerator(base, cents) helper module + 12 hand-calculated unit tests (off-by-100 trap defense, Pitfall 1)
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 02-02-PLAN.md — Mode-aware glyph spec (D-01) + build_cents_full_sweep() orchestrator over (natural,sharp,flat) × ±99¢ + --mode {cents,template} CLI flag (D-04); preserves Phase 1 build_template_three (D-03); locks cents-mode keys per D-05
+- [x] 02-02-PLAN.md — Mode-aware glyph spec (D-01) + build_cents_full_sweep() orchestrator over (natural,sharp,flat) × ±99¢ + --mode {cents,template} CLI flag (D-04); preserves Phase 1 build_template_three (D-03); locks cents-mode keys per D-05
 
 **Wave 3** *(blocked on Wave 2 completion)*
 - [ ] 02-03-PLAN.md — Test net (structural invariants per D-07.2 + UUID pins & byte-faithful snippet snapshots per D-07.3 + cents-mode determinism per D-07.5) + emit production cents.doricolib artifact at repo root
@@ -89,7 +89,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Generator Skeleton + Template Round-Trip | 3/3 | Complete   | 2026-05-01 |
-| 2. Range Expansion to ±99¢ | 1/3 | In Progress|  |
+| 2. Range Expansion to ±99¢ | 2/3 | In Progress|  |
 | 3. Dorico Import + Playback Validation | 0/0 | Not started | - |
 | 4. README + Packaging | 0/0 | Not started | - |
 

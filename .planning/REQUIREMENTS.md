@@ -23,24 +23,24 @@
 
 ### Tonality system & accidentals
 
-- [ ] **TON-01**: Output contains exactly one `TonalitySystemDefinition` named "cents" wrapping one 12-EDO `TemperamentDefinition` and one `AccidentalSystem`
-- [ ] **TON-02**: 12-EDO temperament uses standard `relativeDiatonicDivisions` (200/100/200/200/100/200/200) — diatonic spacing is unchanged
-- [ ] **TON-03**: Three zero-deviation accidentals are present and named `Sharp`, `Flat`, `Natural`; their composites are glyph-only (no cent label)
-- [ ] **TON-04**: For each base in {natural, sharp, flat} and each integer cent in -99..-1 and +1..+99, a non-zero accidental exists with name `<Base> <signed-cents>` (e.g., `Sharp +14`, `Flat -50`, `Natural -7`)
-- [ ] **TON-05**: Accidentals span the union -199¢..+199¢ around natural pitch with overlapping spellings (`Sharp -50` and `Natural +50` both available; `Flat +50` and `Natural -50` both available)
-- [ ] **TON-06**: Total non-zero accidentals = 3 bases × 198 cents = 594; total accidentals including zero-deviation = 597; AccidentalSystem `accidentalDefinitionIDs` lists all 597 in a single comma-space–separated string
+- [x] **TON-01**: Output contains exactly one `TonalitySystemDefinition` named "cents" wrapping one 12-EDO `TemperamentDefinition` and one `AccidentalSystem`
+- [x] **TON-02**: 12-EDO temperament uses standard `relativeDiatonicDivisions` (200/100/200/200/100/200/200) — diatonic spacing is unchanged
+- [x] **TON-03**: Three zero-deviation accidentals are present and named `Sharp`, `Flat`, `Natural`; their composites are glyph-only (no cent label)
+- [x] **TON-04**: For each base in {natural, sharp, flat} and each integer cent in -99..-1 and +1..+99, a non-zero accidental exists with name `<Base> <signed-cents>` (e.g., `Sharp +14`, `Flat -50`, `Natural -7`)
+- [x] **TON-05**: Accidentals span the union -199¢..+199¢ around natural pitch with overlapping spellings (`Sharp -50` and `Natural +50` both available; `Flat +50` and `Natural -50` both available)
+- [x] **TON-06**: Total non-zero accidentals = 3 bases × 198 cents = 594; total accidentals including zero-deviation = 597; AccidentalSystem `accidentalDefinitionIDs` lists all 597 in a single comma-space–separated string
 
 ### Visual rendering
 
-- [ ] **VIS-01**: Zero-deviation accidentals (`Sharp`, `Flat`, `Natural`) render only the standard SMuFL glyph (codepoints `0xE262`, `0xE260`, `0xE261` respectively) via `font.defaultmusic`
-- [ ] **VIS-02**: Sharp/flat-base non-zero accidentals render the SMuFL glyph plus a small signed cent text label, joined by a `relativeAttachment` from the glyph's `kBaselineRight` to the text's `kBaselineLeft` with offset `(-8, -12)` (matches the template's `#-31` composite)
-- [ ] **VIS-03**: Natural-base non-zero accidentals render the signed cent label only (no base glyph), positioned at `xOffset/yOffset = (18, -12)` (matches the template's `-14` composite)
-- [ ] **VIS-04**: Cent labels use `font.defaulttext` and always include the sign character (`+14` for positive, `-14` for negative)
-- [ ] **VIS-05**: Cent labels are deduplicated as shared `TextPrimitiveEntityDefinition`s — one per signed cent value (-99..-1, +1..+99 = 198 entries) reused across the three base accidentals at that cent value
+- [x] **VIS-01**: Zero-deviation accidentals (`Sharp`, `Flat`, `Natural`) render only the standard SMuFL glyph (codepoints `0xE262`, `0xE260`, `0xE261` respectively) via `font.defaultmusic`
+- [x] **VIS-02**: Sharp/flat-base non-zero accidentals render the SMuFL glyph plus a small signed cent text label, joined by a `relativeAttachment` from the glyph's `kBaselineRight` to the text's `kBaselineLeft` with offset `(-8, -12)` (matches the template's `#-31` composite)
+- [x] **VIS-03**: Natural-base non-zero accidentals render the signed cent label only (no base glyph), positioned at `xOffset/yOffset = (18, -12)` (matches the template's `-14` composite)
+- [x] **VIS-04**: Cent labels use `font.defaulttext` and always include the sign character (`+14` for positive, `-14` for negative)
+- [x] **VIS-05**: Cent labels are deduplicated as shared `TextPrimitiveEntityDefinition`s — one per signed cent value (-99..-1, +1..+99 = 198 entries) reused across the three base accidentals at that cent value
 
 ### Playback accuracy
 
-- [ ] **PLAY-01**: Each accidental's `pitchDeltaFromNatural` resolves to its labeled cent value relative to natural pitch, accurate to ±1¢
+- [x] **PLAY-01**: Each accidental's `pitchDeltaFromNatural` resolves to its labeled cent value relative to natural pitch, accurate to ±1¢
 - [ ] **PLAY-02**: When imported into Dorico Pro 6.x and placed in an open/atonal-key flow, every accidental plays back at its expected pitch (verified by tuner against HALion or NotePerformer)
 - [ ] **PLAY-03**: Spot-check matrix in Phase 3 covers: a zero-deviation accidental on each base, the off-by-100 trap (`Sharp +50` plays +150¢, `Flat -7` plays -107¢), boundary values (`Sharp +99`, `Flat -99`, `Natural ±99`), and one enharmonic-equivalent pair (`Sharp -50` and `Natural +50` produce the same sounding pitch)
 
@@ -100,18 +100,18 @@ Mapped by the roadmapper agent on 2026-05-01.
 | SCH-03 | Phase 1 | Complete |
 | SCH-04 | Phase 1 | Complete |
 | SCH-05 | Phase 1 | Complete |
-| TON-01 | Phase 2 | Pending |
-| TON-02 | Phase 2 | Pending |
-| TON-03 | Phase 2 | Pending |
-| TON-04 | Phase 2 | Pending |
-| TON-05 | Phase 2 | Pending |
-| TON-06 | Phase 2 | Pending |
-| VIS-01 | Phase 2 | Pending |
-| VIS-02 | Phase 2 | Pending |
-| VIS-03 | Phase 2 | Pending |
-| VIS-04 | Phase 2 | Pending |
-| VIS-05 | Phase 2 | Pending |
-| PLAY-01 | Phase 2 | Pending |
+| TON-01 | Phase 2 | Complete |
+| TON-02 | Phase 2 | Complete |
+| TON-03 | Phase 2 | Complete |
+| TON-04 | Phase 2 | Complete |
+| TON-05 | Phase 2 | Complete |
+| TON-06 | Phase 2 | Complete |
+| VIS-01 | Phase 2 | Complete |
+| VIS-02 | Phase 2 | Complete |
+| VIS-03 | Phase 2 | Complete |
+| VIS-04 | Phase 2 | Complete |
+| VIS-05 | Phase 2 | Complete |
+| PLAY-01 | Phase 2 | Complete |
 | PLAY-02 | Phase 3 | Pending |
 | PLAY-03 | Phase 3 | Pending |
 | UX-01 | Phase 3 | Pending |
