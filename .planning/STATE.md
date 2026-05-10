@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: MVP
 current_plan: null
 status: shipped
-last_updated: "2026-05-02T15:00:14.075Z"
+last_updated: "2026-05-09T22:30:00.000Z"
 progress:
   total_phases: 4
   completed_phases: 4
@@ -15,7 +15,7 @@ progress:
 
 # State: Cents — Custom Tonality System for Dorico
 
-**Last updated:** 2026-05-02 (v1.0 MVP shipped — milestone archived; ready for next milestone)
+**Last updated:** 2026-05-09 — Completed quick task 260509-e0f: cents-naturals variant tonality (♮ + cent label for naturals)
 
 ## Project Reference
 
@@ -50,6 +50,12 @@ Codebase: 3,979 LOC Python (generator + 133-test suite). Stdlib only.
 ### Decisions log
 
 Full log in `.planning/PROJECT.md` Key Decisions table (all 11 v1.0 decisions marked ✓ Good after Phase 3/4 outcomes).
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260509-e0f | Add `--mode cents-naturals` variant tonality (♮ + cent label for natural ±cents; new tonality "cents (naturals shown)") | 2026-05-09 | b9acc8c | [260509-e0f-add-a-variant-tonality-where-natural-not](./quick/260509-e0f-add-a-variant-tonality-where-natural-not/) |
 
 ## Session Continuity
 
