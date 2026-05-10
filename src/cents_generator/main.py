@@ -27,8 +27,10 @@ from .compose import build_class_a, build_class_b, build_class_c
 from .constants import (
     CENTS_RANGE_NONZERO,
     KEY_ACC_SYSTEM_CENTS,
+    KEY_ACC_SYSTEM_CENTS_NATURALS,
     KEY_TEMPERAMENT_12EDO_CENTS,
     KEY_TONALITY_CENTS,
+    KEY_TONALITY_CENTS_NATURALS,
     KIND_ACCIDENTAL_SYSTEM,
     KIND_GLYPH,
     KIND_TEMPERAMENT,
@@ -235,6 +237,29 @@ def _cents_accidental_key(base: str, cents: int) -> str:
     return f"{base}{cents:+d}"
 
 
+# ----------------------------------------------------------------------------
+# cents-naturals variant: accidental/composite key suffix.
+# ----------------------------------------------------------------------------
+# This suffix is LOCKED FOREVER once shipped (same D-05 rationale as the
+# cents-mode keys). The variant tonality lives under '<base><signed>-cents-naturals'
+# accidental and composite keys so its UUIDs don't collide with cents mode.
+_CENTS_NATURALS_KEY_SUFFIX = "-cents-naturals"
+
+
+def _cents_naturals_accidental_key(base: str, cents: int) -> str:
+    """Variant-suffixed accidental key for the cents-naturals tonality.
+
+    Examples:
+      ('natural', 14) -> 'natural+14-cents-naturals'
+      ('sharp', -50)  -> 'sharp-50-cents-naturals'
+      ('natural', 0)  -> 'natural-cents-naturals'
+
+    LOCKED FOREVER once shipped (D-05 carry-over). Renaming this format
+    creates duplicate entityIDs on user re-import with no clean migration.
+    """
+    return f"{_cents_accidental_key(base, cents)}{_CENTS_NATURALS_KEY_SUFFIX}"
+
+
 def build_cents_full_sweep() -> tuple[
     TemperamentDef,
     AccidentalSystemDef,
@@ -373,22 +398,177 @@ def build_cents_full_sweep() -> tuple[
 
 
 # ----------------------------------------------------------------------------
+# Phase 2 cents-naturals variant: identical sweep counts and structure as
+# build_cents_full_sweep(), with two surgical deltas:
+#   1. Natural ±cents accidentals are emitted as Class B (♮ glyph + cent text
+#      via relativeAttachment), NOT Class C (text-only). Zero-cent natural
+#      stays Class A.
+#   2. Accidental/composite/AccidentalSystem/TonalitySystem entityIDs use
+#      variant-suffixed keys ('-cents-naturals') so the two libraries
+#      coexist in Dorico's picker without entityID collision.
+#
+# Glyph and text entityIDs are SHARED with cents mode — they're keyed off
+# mode-independent SMuFL names ('accidentalNatural') and the literal label
+# strings ('+14', '-50'), which don't change across modes.
+#
+# The 12-EDO TemperamentDefinition entityID is also SHARED — the divisions
+# are identical (200/100/200/200/100/200/200) and there is exactly one
+# 12-EDO temperament. Dorico will see one TemperamentDefinition row when
+# both libraries are imported. This is the correct behavior.
+# ----------------------------------------------------------------------------
+def build_cents_naturals_full_sweep() -> tuple[
+    TemperamentDef,
+    AccidentalSystemDef,
+    TonalitySystemDef,
+    tuple[AccidentalDef, ...],
+    tuple[CompositeDef, ...],
+    tuple[GlyphDef, ...],
+    tuple[TextDef, ...],
+]:
+    """Build the cents-naturals .doricolib payload: same per-section counts
+    as cents mode (1/1/597/1/198/3/597), with variant-suffixed entityIDs
+    on accidentals/composites/AccidentalSystem/TonalitySystem.
+
+    Class dispatch:
+    - cents == 0: Class A (single ♮/♯/♭ glyph) — same as cents mode.
+    - cents != 0, base == 'natural': Class B with allow_natural=True
+      (♮ glyph + cent text + relativeAttachment) — DIFFERS from cents
+      mode (which emits Class C, text-only).
+    - cents != 0, base in ('sharp', 'flat'): Class B (♯/♭ glyph + cent
+      text + relativeAttachment) — structurally byte-identical to cents
+      mode (only the entityIDs differ via the variant key suffix).
+
+    Pitch deltas come from pitch_delta_numerator (D-06) — single-source
+    pitch math identical to cents mode.
+
+    Returns the same 7-tuple shape as build_cents_full_sweep() so run()
+    can dispatch unchanged.
+    """
+    bundles: list[tuple[int, int, int, "AccidentalBundle"]] = []
+    glyph_by_id: dict[str, GlyphDef] = {}
+    text_by_id: dict[str, TextDef] = {}
+
+    for base in ("natural", "sharp", "flat"):
+        for cents in (0, *CENTS_RANGE_NONZERO):
+            acc_name = _cents_accidental_name(base, cents)
+            acc_key = _cents_naturals_accidental_key(base, cents)
+            pdelta = pitch_delta_numerator(base, cents)
+            pdelta_str = f"{pdelta}/1200"
+
+            if cents == 0:
+                bundle = build_class_a(
+                    base,
+                    accidental_name=acc_name,
+                    accidental_key=acc_key,
+                    composite_name=acc_name,
+                    composite_key=acc_key,
+                    pitch_delta_from_natural=pdelta_str,
+                    mode="cents",
+                )
+            elif base == "natural":
+                # Variant delta: ♮ + cent text Class B (NOT Class C).
+                bundle = build_class_b(
+                    "natural",
+                    accidental_name=acc_name,
+                    accidental_key=acc_key,
+                    composite_name=acc_name,
+                    composite_key=acc_key,
+                    label_text=f"{cents:+d}",
+                    pitch_delta_from_natural=pdelta_str,
+                    mode="cents",
+                    allow_natural=True,
+                )
+            else:  # base in ("sharp", "flat")
+                bundle = build_class_b(
+                    base,
+                    accidental_name=acc_name,
+                    accidental_key=acc_key,
+                    composite_name=acc_name,
+                    composite_key=acc_key,
+                    label_text=f"{cents:+d}",
+                    pitch_delta_from_natural=pdelta_str,
+                    mode="cents",
+                )
+
+            bundles.append((pdelta, _BASE_PRIORITY[base], cents, bundle))
+
+            if bundle.glyph is not None:
+                glyph_by_id.setdefault(bundle.glyph.entity_id, bundle.glyph)
+            if bundle.text is not None:
+                text_by_id.setdefault(bundle.text.entity_id, bundle.text)
+
+    # Sort by (delta, base_priority, cents) ascending — matches cents mode.
+    bundles.sort(key=lambda t: (t[0], t[1], t[2]))
+
+    accidentals: tuple[AccidentalDef, ...] = tuple(b[3].accidental for b in bundles)
+    composites: tuple[CompositeDef, ...] = tuple(b[3].composite for b in bundles)
+
+    # Glyph order: natural, sharp, flat (matches cents mode).
+    glyph_natural = glyph_by_id[entity_id(KIND_GLYPH, "accidentalNatural")]
+    glyph_sharp = glyph_by_id[entity_id(KIND_GLYPH, "accidentalSharp")]
+    glyph_flat = glyph_by_id[entity_id(KIND_GLYPH, "accidentalFlat")]
+    glyphs: tuple[GlyphDef, ...] = (glyph_natural, glyph_sharp, glyph_flat)
+
+    # Text order: signed cent ascending. 198 entries.
+    ordered_text_keys = [f"{c:+d}" for c in CENTS_RANGE_NONZERO]
+    texts: tuple[TextDef, ...] = tuple(
+        text_by_id[entity_id(KIND_TEXT, k)] for k in ordered_text_keys
+    )
+
+    # Singletons. TemperamentDef entityID is REUSED from cents mode (same
+    # 12-EDO divisions); name "12-EDO" matches cents mode so the shared
+    # entity is byte-identical when Dorico imports both libraries.
+    temperament = TemperamentDef(
+        name="12-EDO",
+        entity_id=entity_id(KIND_TEMPERAMENT, KEY_TEMPERAMENT_12EDO_CENTS),
+        note_a_to_b=TEMPERAMENT_12EDO_DIVISIONS[0],
+        note_b_to_c=TEMPERAMENT_12EDO_DIVISIONS[1],
+        note_c_to_d=TEMPERAMENT_12EDO_DIVISIONS[2],
+        note_d_to_e=TEMPERAMENT_12EDO_DIVISIONS[3],
+        note_e_to_f=TEMPERAMENT_12EDO_DIVISIONS[4],
+        note_f_to_g=TEMPERAMENT_12EDO_DIVISIONS[5],
+        note_g_to_a=TEMPERAMENT_12EDO_DIVISIONS[6],
+    )
+
+    acc_system = AccidentalSystemDef(
+        name="cents (naturals shown)",
+        entity_id=entity_id(KIND_ACCIDENTAL_SYSTEM, KEY_ACC_SYSTEM_CENTS_NATURALS),
+        accidental_definition_ids=tuple(a.entity_id for a in accidentals),
+    )
+
+    tonality = TonalitySystemDef(
+        name="cents (naturals shown)",
+        entity_id=entity_id(KIND_TONALITY_SYSTEM, KEY_TONALITY_CENTS_NATURALS),
+        temperament_definition_id=temperament.entity_id,
+        accidental_system_id=acc_system.entity_id,
+    )
+
+    return temperament, acc_system, tonality, accidentals, composites, glyphs, texts
+
+
+# ----------------------------------------------------------------------------
 # Public API
 # ----------------------------------------------------------------------------
 def run(
     out_path: pathlib.Path,
-    mode: Literal["cents", "template"] = "cents",
+    mode: Literal["cents", "template", "cents-naturals"] = "cents",
 ) -> None:
     """Build the cents.doricolib and emit it.
 
     mode='cents' (default): the production 1411-entity sweep over
     (natural, sharp, flat) x signed cents in {0} U range(-99..+99) excluding 0.
+    mode='cents-naturals': variant tonality identical to cents mode except
+    natural ±cents render as ♮ + cent text (Class B) instead of bare cent
+    text (Class C). Sibling library to cents.doricolib — install both for
+    side-by-side picker entries.
     mode='template': Phase 1's three-entity round-trip artifact, preserved
     as a permanent regression check on the Class A/B/C dispatcher's
     structural fidelity against TonalitySystemStartTemplate.doricolib.
     """
     if mode == "template":
         payload = build_template_three()
+    elif mode == "cents-naturals":
+        payload = build_cents_naturals_full_sweep()
     else:
         payload = build_cents_full_sweep()
     temperament, acc_system, tonality, accidentals, composites, glyphs, texts = payload
@@ -414,6 +594,9 @@ def main(argv: "Sequence[str] | None" = None) -> int:
             "Cents — Dorico tonality-system generator. "
             "mode='cents' (default): emits the 1411-entity full sweep "
             "(597 accidentals across natural/sharp/flat ±99¢). "
+            "mode='cents-naturals': variant tonality where natural ±cents "
+            "render as ♮ + cent text (Class B) instead of bare text "
+            "(Class C). Sibling library to cents — installs side-by-side. "
             "mode='template': emits the Phase 1 template round-trip "
             "(3 entities: Natural / -14 / #-31)."
         ),
@@ -421,21 +604,31 @@ def main(argv: "Sequence[str] | None" = None) -> int:
     parser.add_argument(
         "--out",
         type=pathlib.Path,
-        default=pathlib.Path("cents.doricolib"),
-        help="Output path for the generated .doricolib (default: cents.doricolib in cwd).",
+        default=None,
+        help=(
+            "Output path for the generated .doricolib (default: "
+            "cents.doricolib for --mode cents/template, "
+            "cents-naturals.doricolib for --mode cents-naturals)."
+        ),
     )
     parser.add_argument(
         "--mode",
-        choices=("cents", "template"),
+        choices=("cents", "cents-naturals", "template"),
         default="cents",
         help=(
-            "Generator mode: 'cents' (production, 597 accidentals) or "
-            "'template' (Phase 1 round-trip, 3 entities). Default: cents."
+            "Generator mode: 'cents' (production, 597 accidentals), "
+            "'cents-naturals' (variant with ♮ + cent text for natural-base "
+            "deviations), or 'template' (Phase 1 round-trip, 3 entities). "
+            "Default: cents."
         ),
     )
     args = parser.parse_args(argv)
-    run(args.out, mode=args.mode)
-    print(f"wrote {args.out} (mode={args.mode})", file=sys.stderr)
+    out = args.out or pathlib.Path(
+        "cents-naturals.doricolib" if args.mode == "cents-naturals"
+        else "cents.doricolib"
+    )
+    run(out, mode=args.mode)
+    print(f"wrote {out} (mode={args.mode})", file=sys.stderr)
     return 0
 
 
