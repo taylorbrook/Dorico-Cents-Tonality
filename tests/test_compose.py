@@ -254,6 +254,92 @@ def test_class_b_rejects_natural_base() -> None:
         )
 
 
+# ----------------------------------------------------------------------------
+# cents-naturals variant: build_class_b accepts base="natural" only when
+# allow_natural=True is explicitly opted in. Default behavior (the Class B
+# rejection above) is preserved for unrelated callers.
+# ----------------------------------------------------------------------------
+def test_class_b_natural_with_opt_in_returns_glyph_plus_text_shape() -> None:
+    """allow_natural=True yields the Class B shape (♮ glyph + cent text).
+
+    Same component layout, attachment offsets, and pair points as the
+    sharp/flat case — the variant tonality emits this for natural ±cents.
+    """
+    b = build_class_b(
+        "natural",
+        accidental_name="Natural +14",
+        accidental_key="natural+14-cents-naturals",
+        composite_name="Natural +14",
+        composite_key="natural+14-cents-naturals",
+        label_text="+14",
+        pitch_delta_from_natural="14/1200",
+        allow_natural=True,
+    )
+    assert b.glyph is not None
+    assert b.glyph.code_point == 0xE261  # SMUFL accidentalNatural
+    assert b.text is not None
+    assert b.text.text == "+14"
+    assert len(b.composite.components) == 2
+
+    glyph_comp = b.composite.components[0]
+    text_comp = b.composite.components[1]
+    assert glyph_comp.component_type == "kGlyph" and glyph_comp.z_order == 1
+    assert text_comp.component_type == "kText" and text_comp.z_order == 2
+
+    assert len(b.composite.relative_attachments) == 1
+    att = b.composite.relative_attachments[0]
+    assert att.x_offset == -8
+    assert att.y_offset == -12
+    assert att.pair1_attachment_point == "kBaselineRight"
+    assert att.pair2_attachment_point == "kBaselineLeft"
+    assert att.pair1_component_instance_id == f"{b.glyph.entity_id}.0"
+    assert att.pair2_component_instance_id == f"{b.text.entity_id}.0"
+
+    assert b.accidental.pitch_delta_from_natural == "14/1200"
+
+
+def test_class_b_natural_without_opt_in_still_rejects() -> None:
+    """Default contract preserved: natural base rejected without allow_natural=True.
+
+    Mirrors test_class_b_rejects_natural_base but names the intent
+    explicitly — guards the existing API surface for unrelated callers.
+    """
+    with pytest.raises(ValueError):
+        build_class_b(
+            "natural",  # type: ignore[arg-type]
+            accidental_name="x", accidental_key="x",
+            composite_name="x", composite_key="x",
+            label_text="+1", pitch_delta_from_natural="1/1200",
+            # allow_natural default = False
+        )
+
+
+def test_class_b_sharp_signature_unchanged_by_new_flag() -> None:
+    """allow_natural is a no-op for sharp/flat: same entityIDs across both flag values.
+
+    Pin the contract that the variant flag does NOT alter sharp/flat output
+    in any way — guarantees byte-identical sharp/flat composites between
+    cents and cents-naturals modes (modulo accidental/composite keys).
+    """
+    common = dict(
+        accidental_name="Sharp +14",
+        accidental_key="sharp+14",
+        composite_name="Sharp +14",
+        composite_key="sharp+14",
+        label_text="+14",
+        pitch_delta_from_natural="114/1200",
+    )
+    b_with_flag = build_class_b("sharp", allow_natural=True, **common)
+    b_without_flag = build_class_b("sharp", **common)
+
+    assert b_with_flag.accidental.entity_id == b_without_flag.accidental.entity_id
+    assert b_with_flag.composite.entity_id == b_without_flag.composite.entity_id
+    assert b_with_flag.glyph is not None and b_without_flag.glyph is not None
+    assert b_with_flag.glyph.entity_id == b_without_flag.glyph.entity_id
+    assert b_with_flag.text is not None and b_without_flag.text is not None
+    assert b_with_flag.text.entity_id == b_without_flag.text.entity_id
+
+
 def test_class_b_flat_uses_correct_codepoint() -> None:
     b = build_class_b(
         "flat",

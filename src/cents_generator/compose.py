@@ -214,7 +214,7 @@ def build_class_a(
 # Class B — sharp/flat-base + cents: glyph + text via relativeAttachment
 # ----------------------------------------------------------------------------
 def build_class_b(
-    base: Literal["sharp", "flat"],
+    base: Literal["sharp", "flat", "natural"],
     *,
     accidental_name: str,
     accidental_key: str,
@@ -223,6 +223,7 @@ def build_class_b(
     label_text: str,
     pitch_delta_from_natural: str,
     mode: Literal["cents", "template"] = "cents",
+    allow_natural: bool = False,
 ) -> AccidentalBundle:
     """Build a Class B (glyph + cents-label) accidental.
 
@@ -235,9 +236,21 @@ def build_class_b(
     Sharp's and Flat's parent_entity_id is empty in BOTH modes, so the
     `mode` kwarg is effectively a no-op for Class B today; it exists for
     signature symmetry with Class A and for future-proofing.
+
+    `allow_natural=True` opts into the cents-naturals variant tonality
+    (♮ + cent text), reachable via `--mode cents-naturals`. The default
+    `allow_natural=False` preserves the original Class B contract — sharp
+    or flat base only — and rejects natural base with `ValueError`. This
+    keeps the natural-base safety check intact for unrelated callers and
+    requires the variant generator to be explicit about the opt-in.
     """
-    if base not in ("sharp", "flat"):
-        raise ValueError(f"Class B requires base in ('sharp', 'flat'); got {base!r}")
+    if base == "natural" and not allow_natural:
+        raise ValueError(
+            f"Class B requires base in ('sharp', 'flat') unless "
+            f"allow_natural=True; got {base!r}"
+        )
+    if base not in ("sharp", "flat", "natural"):
+        raise ValueError(f"Class B unknown base: {base!r}")
     glyph = _glyph_for(base, mode=mode)
     text = _text_for(label_text)
     comp_eid = entity_id(KIND_COMPOSITE, composite_key)
