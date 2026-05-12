@@ -109,6 +109,19 @@ KEY_ACC_SYSTEM_CENTS_NATURALS: str = "cents-naturals"
 
 
 # ----------------------------------------------------------------------------
+# cents-naturals-optional variant keys. THESE LOCK FOREVER once shipped
+# (same D-05 rationale as KEY_*_CENTS and KEY_*_CENTS_NATURALS above).
+# The variant tonality re-uses the cents-mode 12-EDO temperament entityID
+# (KEY_TEMPERAMENT_12EDO_CENTS) AND glyph/text entityIDs (mode-independent
+# keys) — only accidental/composite/accidental-system/tonality entityIDs
+# are variant-namespaced, so the three libraries (cents, cents-naturals,
+# cents-naturals-optional) coexist in Dorico's picker without collision.
+# ----------------------------------------------------------------------------
+KEY_TONALITY_CENTS_NATURALS_OPTIONAL: str   = "cents-naturals-optional"
+KEY_ACC_SYSTEM_CENTS_NATURALS_OPTIONAL: str = "cents-naturals-optional"
+
+
+# ----------------------------------------------------------------------------
 # Cents-mode sweep range: signed cent deviations from -99 to +99, excluding 0.
 # The zero-deviation case is emitted via bare-base accidentals (Sharp/Flat/
 # Natural) once per base, NOT iterated as cents=0. See CONTEXT.md D-05 and
