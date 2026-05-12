@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: MVP
 current_plan: null
 status: shipped
-last_updated: "2026-05-09T22:30:00.000Z"
+last_updated: "2026-05-12T22:20:00.000Z"
 progress:
   total_phases: 4
   completed_phases: 4
@@ -15,7 +15,7 @@ progress:
 
 # State: Cents — Custom Tonality System for Dorico
 
-**Last updated:** 2026-05-09 — Completed quick task 260509-e0f: cents-naturals variant tonality (♮ + cent label for naturals)
+**Last updated:** 2026-05-12 — Completed quick task 260512-l0i: cents-naturals-optional variant tonality (both flavors of natural ±cents side-by-side)
 
 ## Project Reference
 
@@ -56,6 +56,7 @@ Full log in `.planning/PROJECT.md` Key Decisions table (all 11 v1.0 decisions ma
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260509-e0f | Add `--mode cents-naturals` variant tonality (♮ + cent label for natural ±cents; new tonality "cents (naturals shown)") | 2026-05-09 | b9acc8c | [260509-e0f-add-a-variant-tonality-where-natural-not](./quick/260509-e0f-add-a-variant-tonality-where-natural-not/) |
+| 260512-l0i | Add `--mode cents-naturals-optional` variant tonality emitting BOTH text-only and ♮+cent flavors of natural ±cents side-by-side (new tonality "cents (naturals optional)"; 1794 entities, md5 `b9fcb6bb70df82e069857573dc877e95`) | 2026-05-12 | f51f4da | [260512-l0i-add-mode-cents-naturals-optional-variant](./quick/260512-l0i-add-mode-cents-naturals-optional-variant/) |
 
 ## Session Continuity
 
